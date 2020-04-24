@@ -1,2 +1,4 @@
 --创建shop数据库
 create database if not exists shop default character set = 'utf8';
+
+阿水还输得两分还是
