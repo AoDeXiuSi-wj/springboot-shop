@@ -1,0 +1,50 @@
+# 默认端口号是 8080 我们可以把它改成 9090
+server:
+  port: 8087
+# 配置spring
+spring:
+  resources:
+    static-locations: classpath:/static/
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+  #thymelea模板配置
+  thymeleaf:
+    #thymeleaf 所在路径
+    prefix: classpath:/templates/
+    #thymeleaf 后缀
+    suffix: .html
+    #thymeleaf 采用的标准
+    mode: HTML5
+    #thymeleaf 编码格式
+    encoding: UTF-8
+    #缓存
+    cache: false
+    servlet:
+      content-type: text/html
+  datasource:
+    url: jdbc:mysql://localhost:3306/wj?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=Asia
+    username: wj
+    password: wj
+    driverClassName: com.mysql.cj.jdbc.Driver
+  #热部署
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude:
+  freemarker:
+    cache: false    #页面不加载缓存，修改即时生效
+
+#  jpa:
+#    #是否打印sql语句
+#    show-sql: true
+#
+#mybatis:
+#  #指定 mybatis 配置文件路径
+#  config-location: classpath:MyBatis.xml
+#  #指定 mybatis 文件路径
+#  mapper-locations: classpath:sqlmap/*.xml
+
+
