@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HtmlController {
     @RequestMapping("/")
     public String index(){
+        System.out.println("kaishi");
         return "index";
     }
 

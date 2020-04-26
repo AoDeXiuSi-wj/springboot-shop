@@ -1,4 +1,21 @@
 --创建shop数据库
 create database if not exists shop default character set = 'utf8';
-
-阿水还输得两分还是
+--user表
+create table user
+(
+  uid   int auto_increment
+  comment '唯一标识'
+    primary key,
+  uname varchar(20) not null
+  comment '用户名',
+  upswd varchar(50) null
+  comment '密码',
+  utel  varchar(11) not null
+  comment '电话',
+  ueml  varchar(50) null
+  comment '邮箱',
+  usex  int         not null
+  comment '1男，2女，3保密'
+)
+  comment '用户表';
+INSERT INTO `shop`.`user` (`uid`, `uname`, `upswd`, `utel`, `ueml`, `usex`) VALUES (1, '管理员', 'admin', '000', '000', 3)
