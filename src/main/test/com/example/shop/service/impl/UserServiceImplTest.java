@@ -4,6 +4,7 @@ import com.example.shop.ShopApplication;
 import com.example.shop.dao.UserExample;
 import com.example.shop.entity.User;
 import com.example.shop.service.UserService;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,5 +37,13 @@ public class UserServiceImplTest {
         criteria.andUnameEqualTo("管理员");
         List<User> users=userService.selectByExample(userExample);
         System.out.println(users);
+    }
+
+    @Test
+    public  void  test(){
+        Md5Hash md5Hash=new Md5Hash();
+       /* md5Hash.setSalt("shop2020");
+        md5Hash.
+        md5Hash.setIterations(1);*/
     }
 }
