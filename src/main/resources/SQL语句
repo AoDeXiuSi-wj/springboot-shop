@@ -19,3 +19,32 @@ create table user
 )
   comment '用户表';
 INSERT INTO `shop`.`user` (`uid`, `uname`, `upswd`, `utel`, `ueml`, `usex`) VALUES (1, '管理员', 'admin', '000', '000', 3)
+
+--role角色表
+CREATE TABLE user_role
+(
+    rid int PRIMARY KEY COMMENT '唯一标识符' AUTO_INCREMENT,
+    username varchar(20) NOT NULL COMMENT '用户名称',
+    rolename varchar(20) NOT NULL COMMENT '角色名称'
+);
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (1, 'wj', 'superadmin');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (2, 'jw', 'superadmin');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (3, 'ww', 'admin');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (4, 'jj', 'user');
+
+---role_permission角色权限表
+CREATE TABLE role_permission
+(
+    pid int PRIMARY KEY COMMENT '唯一标识符' AUTO_INCREMENT,
+    rolename varchar(20) NOT NULL COMMENT '角色名称',
+    permission varchar(50) NOT NULL COMMENT '权限'
+);
+ALTER TABLE role_permission COMMENT = '权限表';
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (1, 'superadmin', 'query');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (2, 'superadmin', 'insert');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (3, 'superadmin', 'update');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (4, 'superadmin', 'delete');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (5, 'admin', 'query');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (6, 'admin', 'insert');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (7, 'admin', 'update');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (8, 'user', 'query');

@@ -50,9 +50,14 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 #showSql
+
 logging:
+  pattern:
+    #格式化，只能输出日期和内容
+    console: "%d - %msg%n"
   level:
-    com:
-      example:
-        mapper : debug
+    #打印级别
+    com.example.shop.ShopApplication: debug
+    com.example.shop.dao: debug
+
 
