@@ -9,9 +9,14 @@ import java.sql.SQLOutput;
 @Controller
 @RequestMapping("/html")
 public class loginConctroller {
-            @RequestMapping("/to_login")
-            public String to_login(){
-                System.out.println("退出");
-                return "thymeleaf/login";
-            }
+    @RequestMapping("/login")
+    public String login(){
+        System.out.println("退出");
+        return "thymeleaf/login";
+    }
+    @RequestMapping("/to_login")
+    public String to_login(){
+        System.out.println("退出");
+        return "thymeleaf/login";
+    }
 }
