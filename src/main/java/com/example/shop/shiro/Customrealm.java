@@ -46,7 +46,9 @@ public class Customrealm extends AuthorizingRealm {
         authorizationInfo.setStringPermissions(permissions);
         return authorizationInfo;
     }
-
+    /**
+     * 根据用户名获取角色
+     * */
     private Set<String> getRolesByName(String username) {
         List<UserRole> userRoleList=roleService.selectRolesByUserName(username);
         Set<String> set = new HashSet<>();
@@ -58,7 +60,9 @@ public class Customrealm extends AuthorizingRealm {
         }
         return null;
     }
-
+    /**
+     * 根据用户名获取权限
+     * */
     private Set<String> getPermissonsByName(String username) {
         List<RolePermission> permissionList=permissionService.selectPermissionsByUserName(username);
         if(permissionList != null) {
@@ -90,10 +94,12 @@ public class Customrealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo=new SimpleAuthenticationInfo(
                 username,password,"customRealm"
         );
-        //authenticationInfo.setCredentialsSalt((ByteSource.Util.bytes(salt)));
+        authenticationInfo.setCredentialsSalt((ByteSource.Util.bytes(salt)));
         return authenticationInfo;
     }
-
+    /**
+    * 根据用户名获取用户密码
+    * */
     private String getPswdByUserName(String username) {
         UserExample userExample=new UserExample();
         userExample.or().andUnameEqualTo(username);
@@ -104,5 +110,51 @@ public class Customrealm extends AuthorizingRealm {
           return user.getUpswd();
         }
         return null;
+    }
+
+
+    /**
+     * 重写方法,清除当前用户的的 授权缓存
+     * @param principals
+     */
+    @Override
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthorizationInfo(principals);
+    }
+
+    /**
+     * 重写方法，清除当前用户的 认证缓存
+     * @param principals
+     */
+    @Override
+    public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        super.clearCachedAuthenticationInfo(principals);
+    }
+
+    @Override
+    public void clearCache(PrincipalCollection principals) {
+        super.clearCache(principals);
+    }
+
+    /**
+     * 自定义方法：清除所有 授权缓存
+     */
+    public void clearAllCachedAuthorizationInfo() {
+        getAuthorizationCache().clear();
+    }
+
+    /**
+     * 自定义方法：清除所有 认证缓存
+     */
+    public void clearAllCachedAuthenticationInfo() {
+        getAuthenticationCache().clear();
+    }
+
+    /**
+     * 自定义方法：清除所有的  认证缓存  和 授权缓存
+     */
+    public void clearAllCache() {
+        clearAllCachedAuthenticationInfo();
+        clearAllCachedAuthorizationInfo();
     }
 }

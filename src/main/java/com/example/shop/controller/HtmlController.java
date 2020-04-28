@@ -38,12 +38,6 @@ public class HtmlController {
         return "thymeleaf/test";
     }
 
-    @RequestMapping("/test2")
-    @ResponseBody
-    public String test2(){
-        return "hello world!";
-    }
-
     @RequestMapping("/control")
     public String controlJsp(@RequestParam(value = "param",required=true,defaultValue = "/home")String _url){
         return _url;

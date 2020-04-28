@@ -59,7 +59,7 @@
         $=layui.jquery;
         $(".imgscode").on('click',function(){
             imgchange();
-        })
+        });
         function  imgchange () {
             $("#imgscode").attr("src","changeimglogin?date="+new Date().getTime());
         }
@@ -75,9 +75,10 @@
                         window.location.href="/html/shop";
                     } else{
                         layer.alert(msgs.errMsg);
+                        imgchange();
                     }
                 }
-            })
+            });
             // layer.msg(JSON.stringify(data.field));
             return false;
         });

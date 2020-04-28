@@ -1,14 +1,11 @@
 package com.example.shop.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.shop.entity.User;
-import com.example.shop.service.loginService;
 import com.example.shop.util.VerificationCodeTool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,9 +23,6 @@ import java.io.IOException;
 
 @Controller
 public class loginConctroller {
-    @Resource
-    private loginService service;
-
     /****
      * 退出登录
      * @param session
@@ -55,7 +49,9 @@ public class loginConctroller {
     @RequestMapping("/loginout")
     public String loginout(){
         Subject subject= SecurityUtils.getSubject();
-        subject.logout();
+        if (subject != null) {
+            subject.logout();
+        }
         return "thymeleaf/login";
     }
     /***
@@ -81,8 +77,6 @@ public class loginConctroller {
             json.put("errMsg", "验证码错误！");
             return json.toJSONString();
         }
-        System.out.println("实际结果："+captcha);
-        System.out.println("输入结果:"+imgcode);
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(uname,upwsd);
         try {
@@ -100,11 +94,14 @@ public class loginConctroller {
             errMsg="用户不存在";
         } catch (UnauthorizedException e) {
             errMsg="您没有得到相应的授权";
+        } catch (Exception e) {
+            errMsg = "登录失败："+e.getClass().getSimpleName()+"<br/>详情："+e.getMessage();
         }
         session.removeAttribute("code");
         if(subject.isAuthenticated()){
             status=1;
-            System.out.println("已登录！");
+            session.setAttribute("user",subject.getPrincipal().toString());
+            System.out.println("用户"+subject.getPrincipal().toString()+"已登录！");
         }else {
             status=-1;
         }

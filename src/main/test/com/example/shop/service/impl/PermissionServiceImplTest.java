@@ -5,6 +5,9 @@ import com.example.shop.ShopApplication;
 import com.example.shop.dao.RolePermissionMapper;
 import com.example.shop.dao.UserRoleMapper;
 import com.example.shop.service.PermissionService;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,5 +38,16 @@ public class PermissionServiceImplTest {
 
     @Test
     public void selectPermissionsByExample() {
+    }
+
+    //明文转密文的代码:
+    @Test
+    public void MD5Test(){
+        String hashAlgorithName = "MD5";
+        String password = "jw";//输入密码
+        int hashIterations = 1;//加密次数
+        ByteSource credentialsSalt = ByteSource.Util.bytes("shop2020");//加盐
+        Object obj = new SimpleHash(hashAlgorithName, password, credentialsSalt, hashIterations);
+        System.out.println(obj.toString());
     }
 }

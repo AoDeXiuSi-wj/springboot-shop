@@ -1,5 +1,6 @@
 package com.example.shop.shiro;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -26,6 +27,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/chklogin", "anon");
         filterChainDefinitionMap.put("/changeimglogin", "anon");
+        filterChainDefinitionMap.put("/html/test", "anon");
         filterChainDefinitionMap.put("/shop", "user");
         //拦截其他所以接口
         filterChainDefinitionMap.put("/**", "authc");
@@ -46,6 +48,8 @@ public class ShiroConfig {
     @Bean
     public Customrealm shiroRealm(){
         Customrealm shiroRealm = new Customrealm();
+        //告诉shiro，密码加密
+        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
     }
 
@@ -64,6 +68,23 @@ public class ShiroConfig {
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
     }
+
+    /**
+     * 配置密码比较器
+     * @return
+     */
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        // 使用md5 算法进行加密
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        // 设置散列次数： 意为加密几次
+        hashedCredentialsMatcher.setHashIterations(1);
+        //存储为16进制
+        hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
+        return hashedCredentialsMatcher;
+    }
+
     /**
      * 开启shiro aop注解支持 使用代理方式所以需要开启代码支持
      *  一定要写入上面advisorAutoProxyCreator（）自动代理。不然AOP注解不会生效
