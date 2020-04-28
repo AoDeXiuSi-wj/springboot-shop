@@ -1,6 +1,6 @@
 # 默认端口号是 8080 我们可以把它改成 9090
 server:
-  port: 8080
+  port: 8087
 # 配置spring
 spring:
   resources:
@@ -24,11 +24,10 @@ spring:
     servlet:
       content-type: text/html
   datasource:
-    url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=Asia
     username: root
     password: xiaoniu
-    #driverClassName: com.mysql.cj.jdbc.Driver
-    driver-class-name: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.jdbc.Driver
   #热部署
   devtools:
     restart:
@@ -42,22 +41,10 @@ spring:
 #    #是否打印sql语句
 #    show-sql: true
 #
-mybatis:
+#mybatis:
 #  #指定 mybatis 配置文件路径
-#  config-location: classpath:mybatis-config.xml
+#  config-location: classpath:MyBatis.xml
 #  #指定 mybatis 文件路径
-  type-aliases-package: com.example.shop.entity
-  mapper-locations: classpath:mapper/*.xml
-
-#showSql
-
-logging:
-  pattern:
-    #格式化，只能输出日期和内容
-    console: "%d - %msg%n"
-  level:
-    #打印级别
-    com.example.shop.ShopApplication: debug
-    com.example.shop.dao: debug
+#  mapper-locations: classpath:sqlmap/*.xml
 
 
