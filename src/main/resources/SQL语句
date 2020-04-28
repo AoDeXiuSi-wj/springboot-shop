@@ -2,7 +2,10 @@
 create database if not exists shop default character set = 'utf8';
 --创建账户
 create user 'shop'@'localhost' identified by 'shop';
+create user 'shop'@'%' identified by 'shop';
+--授权
 GRANT ALL PRIVILEGES ON *.* TO 'shop'@'%'     IDENTIFIED BY 'shop' WITH GRANT OPTION;
+grant all privileges on *.* to 'shop'@'localhost' identified by 'shop' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 --user表
