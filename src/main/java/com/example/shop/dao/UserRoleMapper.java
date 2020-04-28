@@ -1,7 +1,6 @@
 package com.example.shop.dao;
 
 import com.example.shop.dao.UserRoleExample;
-import com.example.shop.entity.User;
 import com.example.shop.entity.UserRole;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -28,5 +27,4 @@ public interface UserRoleMapper {
     int updateByPrimaryKeySelective(UserRole record);
 
     int updateByPrimaryKey(UserRole record);
-
 }

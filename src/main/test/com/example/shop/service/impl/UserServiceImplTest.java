@@ -46,4 +46,15 @@ public class UserServiceImplTest {
         md5Hash.
         md5Hash.setIterations(1);*/
     }
+
+    @Test
+    public void selectByName() {
+        UserExample userExample=new UserExample();
+        UserExample.Criteria criteria=userExample.createCriteria();
+        userExample.or().andUnameEqualTo("管理员");
+        userExample.or().andUtelEqualTo("管理员");
+        userExample.or().andUemlEqualTo("管理员");
+        User user=userService.selectByName(userExample);
+        System.out.println("==="+user.toString());
+    }
 }

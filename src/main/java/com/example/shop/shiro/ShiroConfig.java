@@ -1,17 +1,12 @@
 package com.example.shop.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.session.mgt.SessionManager;
-import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,8 +21,11 @@ public class ShiroConfig {
         //注意过滤器配置顺序 不能颠倒
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了，登出后跳转配置的loginUrl
         // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/img", "anon");
-        filterChainDefinitionMap.put("/layui-v2.5.6", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/all/**", "anon");
+        filterChainDefinitionMap.put("/html/login", "anon");
+        filterChainDefinitionMap.put("/html/chklogin", "anon");
+        filterChainDefinitionMap.put("/html/shop", "user");
         //拦截其他所以接口
         filterChainDefinitionMap.put("/**", "authc");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据

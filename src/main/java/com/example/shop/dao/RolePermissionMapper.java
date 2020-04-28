@@ -1,6 +1,5 @@
 package com.example.shop.dao;
 
-import com.example.shop.dao.RolePermissionExample;
 import com.example.shop.entity.RolePermission;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;

@@ -6,6 +6,6 @@ import com.example.shop.entity.UserRole;
 import java.util.List;
 
 public interface RoleService {
-    List<UserRole> selectByExample(String uname);
+    List<UserRole> selectByName(String uname);
 
 }

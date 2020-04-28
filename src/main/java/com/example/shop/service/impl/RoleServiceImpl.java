@@ -12,7 +12,7 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     private UserRoleMapper userRoleMapper;
     @Override
-    public List<UserRole> selectByExample(String uname) {
+    public List<UserRole> selectByName(String uname) {
         UserRoleExample userRoleExample=new UserRoleExample();
         userRoleExample.setDistinct(false);
         userRoleExample.setOrderByClause("rid asc");

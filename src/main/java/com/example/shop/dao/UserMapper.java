@@ -1,15 +1,12 @@
 package com.example.shop.dao;
 
-import com.example.shop.dao.UserExample;
 import com.example.shop.entity.User;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
 public interface UserMapper {
     long countByExample(UserExample example);
 

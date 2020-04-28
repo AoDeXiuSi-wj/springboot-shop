@@ -4,89 +4,70 @@
     <meta charset="UTF-8">
     <title>登录</title>
     <script src="/layui-v2.5.6/layui/lay/modules/jquery.js"></script>
-    <link rel="stylesheet" href="layui-v2.5.6/layui/css/layui.css">
+    <link rel="stylesheet" href="/layui-v2.5.6/layui/css/layui.css">
     <script src="/layui-v2.5.6/layui/layui.js"></script>
 </head>
-<body style="background-color: #fffdf5">
-
-<div class="layui-carousel" id="test10">
-    <div carousel-item="">
-        <div><img width="100%" height="100%" src="/img/1.png"></div>
-        <div><img  width="100%" height="100%" src="http://a4.att.hudong.com/47/66/01300000337727123266663353910.jpg"></div>
-        <div><img width="100%" height="100%" src="http://a4.att.hudong.com/22/59/19300001325156131228593878903.jpg"></div>
-        <div><img width="100%" height="100%" src="http://a3.att.hudong.com/43/74/01300000164151121808741085971.jpg"></div>
-        <div><img width="100%" height="100%" src="http://a2.att.hudong.com/13/86/01300001285722131043860050752.jpg"></div>
-        <div><img width="100%" height="100%" src="http://a0.att.hudong.com/55/81/01300258522024132317810863863.jpg"></div>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">输入框</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
     </div>
-</div>
-<div style="background-color: white;width: 400px;margin: 0 auto;">
-    <form class="layui-form" action="">
-        <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
-            <div class="layui-input-inline">
-                <input type="text" name="uname" value="管理员" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-            </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码框</label>
+        <div class="layui-input-inline">
+            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">密&nbsp;&nbsp;&nbsp;码</label>
-            <div class="layui-input-inline">
-                <input type="password" name="upswd" value="admin" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-            </div>
-            <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+        <div class="layui-form-mid layui-word-aux">辅助文字</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择框</label>
+        <div class="layui-input-block">
+            <select name="city" lay-verify="required">
+                <option value=""></option>
+                <option value="0">北京</option>
+                <option value="1">上海</option>
+                <option value="2">广州</option>
+                <option value="3">深圳</option>
+                <option value="4">杭州</option>
+            </select>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">验证码</label>
-            <div class="layui-input-inline">
-                <input id="login-code" type="text" name="imgcode" required  lay-verify="required" placeholder="请输入验证码" class="layui-input" style="width: 100%;">
-                <img src="changeimglogin" id="imgscode" class="imgscode" style="width: 70%;height: 35px;"><a class="imgscode" style="cursor: pointer;">&nbsp;&nbsp;&nbsp;换一个</a>
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">复选框</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="like[write]" title="写作">
+            <input type="checkbox" name="like[read]" title="阅读" checked>
+            <input type="checkbox" name="like[dai]" title="发呆">
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单选框</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="男" title="男">
+            <input type="radio" name="sex" value="女" title="女" checked>
         </div>
-    </form>
-</div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
 </body>
 </html>
 <script>
     //Demo
-    layui.use(['carousel', 'form'], function(){
-        var carousel = layui.carousel;
+    layui.use('form', function(){
         var form = layui.form;
-        $=layui.jquery;
-        $(".imgscode").on('click',function(){
-            imgchange();
-        })
-        function  imgchange () {
-            $("#imgscode").attr("src","changeimglogin?date="+new Date().getTime());
-        }
         //监听提交
         form.on('submit(formDemo)', function(data){
-            $.ajax({
-                url:"/cheklogin",
-                type:"post",
-                data:data.field,
-                success:function (msg) {
-                    var msgs=eval("("+msg+")");
-                    alert(msgs.msg);
-                    window.location.href="/html/shop";
-                }
-            })
-           // layer.msg(JSON.stringify(data.field));
+            layer.msg(JSON.stringify(data.field));
             return false;
         });
-        //图片轮播
-        carousel.render({
-            elem: '#test10',
-            width: '100%',
-            height: '440px',
-            interval: 3000
-        });
-
     });
-
-
 </script>

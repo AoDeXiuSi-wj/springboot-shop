@@ -18,7 +18,6 @@ public class HtmlController {
     private UserService userService;
     @RequestMapping("/")
     public String index(){
-        System.out.println("kaishi");
         return "index";
     }
 

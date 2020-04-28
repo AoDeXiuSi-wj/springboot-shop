@@ -18,8 +18,11 @@ create table user
   comment '1男，2女，3保密'
 )
   comment '用户表';
-INSERT INTO `shop`.`user` (`uid`, `uname`, `upswd`, `utel`, `ueml`, `usex`) VALUES (1, '管理员', 'admin', '000', '000', 3)
-
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (1, '管理员', 'admin', '000', '000', 3);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (2, 'wj', 'wj', '111', '222', 1);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (3, 'jw', 'jw', '333', '444', 1);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (4, 'ww', 'ww', '555', '666', 2);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (5, 'jj', 'jj', '777', '888', 2);
 --role角色表
 CREATE TABLE user_role
 (

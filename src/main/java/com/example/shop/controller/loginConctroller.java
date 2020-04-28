@@ -11,11 +11,11 @@ import java.sql.SQLOutput;
 public class loginConctroller {
     @RequestMapping("/login")
     public String login(){
-        System.out.println("退出");
+
         return "thymeleaf/login";
     }
-    @RequestMapping("/to_login")
-    public String to_login(){
+    @RequestMapping("/loginout")
+    public String loginout(){
         System.out.println("退出");
         return "thymeleaf/login";
     }
