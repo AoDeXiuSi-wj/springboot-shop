@@ -1,6 +1,6 @@
 # 默认端口号是 8080 我们可以把它改成 9090
 server:
-  port: 8087
+  port: 8080
 # 配置spring
 spring:
   resources:
