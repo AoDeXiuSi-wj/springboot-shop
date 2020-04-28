@@ -12,4 +12,5 @@ public interface UserService {
     User selectByName(UserExample example);
 
     List<User> selectByExample(UserExample example);
+
 }

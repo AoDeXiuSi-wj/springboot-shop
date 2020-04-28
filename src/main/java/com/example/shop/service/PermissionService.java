@@ -6,7 +6,9 @@ import com.example.shop.entity.RolePermission;
 import java.util.List;
 
 public interface PermissionService {
-    List<RolePermission> selectByRole(String role);
+    List<RolePermission> selectPermissionsByUserName(String username);
 
-    List<RolePermission> selectByExample(RolePermissionExample example);
+    List<RolePermission> selectPermissionsByRoleName(String rolename);
+
+    List<RolePermission> selectPermissionsByExample(RolePermissionExample example);
 }

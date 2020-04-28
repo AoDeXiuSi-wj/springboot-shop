@@ -48,7 +48,7 @@ public class Customrealm extends AuthorizingRealm {
     }
 
     private Set<String> getRolesByName(String username) {
-        List<UserRole> userRoleList=roleService.selectByName(username);
+        List<UserRole> userRoleList=roleService.selectRolesByUserName(username);
         Set<String> set = new HashSet<>();
         if(userRoleList != null){
             for(UserRole userRole:userRoleList){
@@ -60,17 +60,8 @@ public class Customrealm extends AuthorizingRealm {
     }
 
     private Set<String> getPermissonsByName(String username) {
-        //可能有多个角色
-        List<UserRole> userRoleList=roleService.selectByName(username);
-        if(userRoleList != null) {
-            RolePermissionExample example = new RolePermissionExample();
-            example.setDistinct(true);
-            example.setOrderByClause("pid asc");
-            for(UserRole userRole:userRoleList){
-                example.or().andRolenameEqualTo(userRole.getRolename());
-            }
-            //查询所有角色包含的所有权限
-            List<RolePermission> permissionList = permissionService.selectByExample(example);
+        List<RolePermission> permissionList=permissionService.selectPermissionsByUserName(username);
+        if(permissionList != null) {
             Set<String> set = new HashSet<>();
             if (permissionList != null) {
                 for (RolePermission permission : permissionList) {
@@ -89,7 +80,7 @@ public class Customrealm extends AuthorizingRealm {
         //获得用户名/手机号/邮箱
         String username= (String) authenticationToken.getPrincipal();
         //通过用户名到数据库获取凭证
-        String password= getPswdByName(username);
+        String password= getPswdByUserName(username);
         if(password == null){
             return null;
         }
@@ -103,7 +94,7 @@ public class Customrealm extends AuthorizingRealm {
         return authenticationInfo;
     }
 
-    private String getPswdByName(String username) {
+    private String getPswdByUserName(String username) {
         UserExample userExample=new UserExample();
         userExample.or().andUnameEqualTo(username);
         userExample.or().andUtelEqualTo(username);

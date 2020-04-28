@@ -21,7 +21,7 @@ import java.util.List;
 @SpringBootTest(classes = ShopApplication.class)
 public class UserServiceImplTest {
     private final Logger log= LoggerFactory.getLogger("UserServiceImplTest");
-    @Autowired
+    @Resource
     private UserService userService;
     @Test
     public void selectByPrimaryKey() {
@@ -50,7 +50,6 @@ public class UserServiceImplTest {
     @Test
     public void selectByName() {
         UserExample userExample=new UserExample();
-        UserExample.Criteria criteria=userExample.createCriteria();
         userExample.or().andUnameEqualTo("管理员");
         userExample.or().andUtelEqualTo("管理员");
         userExample.or().andUemlEqualTo("管理员");

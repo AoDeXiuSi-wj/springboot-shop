@@ -4,20 +4,22 @@ import com.example.shop.dao.UserRoleExample;
 import com.example.shop.dao.UserRoleMapper;
 import com.example.shop.entity.UserRole;
 import com.example.shop.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
+    @Resource
     private UserRoleMapper userRoleMapper;
     @Override
-    public List<UserRole> selectByName(String uname) {
+    public List<UserRole> selectRolesByUserName(String username) {
         UserRoleExample userRoleExample=new UserRoleExample();
-        userRoleExample.setDistinct(false);
         userRoleExample.setOrderByClause("rid asc");
         UserRoleExample.Criteria criteria=userRoleExample.createCriteria();
-        criteria.andUsernameEqualTo(uname);
+        criteria.andUsernameEqualTo(username);
         return userRoleMapper.selectByExample(userRoleExample);
     }
 }

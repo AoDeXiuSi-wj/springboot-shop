@@ -84,8 +84,25 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select id="selectByName" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
+
     <include refid="Base_Column_List" />
     from user
     where `uid` = #{uid,jdbcType=INTEGER}
