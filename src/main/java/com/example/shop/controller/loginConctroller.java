@@ -81,8 +81,8 @@ public class loginConctroller {
             json.put("errMsg", "验证码错误！");
             return json.toJSONString();
         }
-        //System.out.println("实际结果："+captcha);
-        //System.out.println("输入结果:"+imgcode);
+        System.out.println("实际结果："+captcha);
+        System.out.println("输入结果:"+imgcode);
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(uname,upwsd);
         try {
