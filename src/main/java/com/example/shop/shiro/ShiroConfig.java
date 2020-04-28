@@ -28,6 +28,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/chklogin", "anon");
         filterChainDefinitionMap.put("/changeimglogin", "anon");
         filterChainDefinitionMap.put("/html/test", "anon");
+        filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/shop", "user");
         //拦截其他所以接口
         filterChainDefinitionMap.put("/**", "authc");

@@ -24,17 +24,6 @@ import java.io.IOException;
 @Controller
 public class loginConctroller {
     /****
-     * 退出登录
-     * @param session
-     * @return
-     */
-    @RequestMapping("/to_login")
-    public String to_login(HttpSession session){
-        session.setAttribute("User",null);
-        return "redirect:/login";
-    }
-
-    /****
      * 登录
      * @return
      */
@@ -52,7 +41,7 @@ public class loginConctroller {
         if (subject != null) {
             subject.logout();
         }
-        return "thymeleaf/login";
+        return "redirect:/login";
     }
     /***
      * 验证登录
