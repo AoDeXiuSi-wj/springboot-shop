@@ -9,6 +9,8 @@ spring:
     view:
       prefix: /templates/
       suffix: .html
+    #出现错误时, 直接抛出异常
+    throw-exception-if-no-handler-found: true
   #thymelea模板配置
   thymeleaf:
     #thymeleaf 所在路径
@@ -16,7 +18,7 @@ spring:
     #thymeleaf 后缀
     suffix: .html
     #thymeleaf 采用的标准
-    mode: HTML5
+    mode: LEGACYHTML5 #HTML5
     #thymeleaf 编码格式
     encoding: UTF-8
     #缓存
@@ -29,6 +31,11 @@ spring:
     password: shop
     #driverClassName: com.mysql.cj.jdbc.Driver
     driver-class-name: com.mysql.jdbc.Driver
+  #redis配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
   #热部署
   devtools:
     restart:

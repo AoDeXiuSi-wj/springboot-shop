@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>shirotest</h2>
+<shiro:hasPermission name="insert">
+    <label>这个用户有插入权限</label>
+</shiro:hasPermission>
+<shiro:hasPermission name="delete">
+    <label>这个用户有删除权限</label>
+</shiro:hasPermission>
+</body>
+</html>

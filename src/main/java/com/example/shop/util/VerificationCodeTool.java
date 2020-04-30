@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
-
+/*
+* 登录验证码工具
+* */
 public class VerificationCodeTool {
     // 日志
    // private static final Logger LOG = Logger.getLogger(String.valueOf(VerificationCodeTool.class));

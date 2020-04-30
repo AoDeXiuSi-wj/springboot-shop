@@ -1,16 +1,21 @@
 package com.example.shop.shiro;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
+
 @Configuration
 public class ShiroConfig {
     @Bean
@@ -27,7 +32,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/chklogin", "anon");
         filterChainDefinitionMap.put("/changeimglogin", "anon");
-        filterChainDefinitionMap.put("/html/test", "anon");
+        filterChainDefinitionMap.put("/html/*test", "anon");
+        filterChainDefinitionMap.put("/html/error", "anon");
         filterChainDefinitionMap.put("/shop", "user");
         //拦截其他所以接口
         filterChainDefinitionMap.put("/**", "authc");
@@ -35,8 +41,8 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的链接 自行处理。不用shiro进行跳转
         shiroFilterFactoryBean.setSuccessUrl("/shop");
-        //未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/user/unauth");
+        //访问没有权限注解如@RequiresRole的未授权界面时，跳转;
+        shiroFilterFactoryBean.setUnauthorizedUrl("/html/error");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -63,11 +69,7 @@ public class ShiroConfig {
         securityManager.setRealm(shiroRealm());
         return  securityManager;
     }
-    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
-        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-        advisorAutoProxyCreator.setProxyTargetClass(true);
-        return advisorAutoProxyCreator;
-    }
+
 
     /**
      * 配置密码比较器
@@ -84,6 +86,28 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
         return hashedCredentialsMatcher;
     }
+    /**
+     * thymeleaf引入shrio的taglib标签
+     * 需要thymeleaf-extras-shiro版本：2.0.0
+     * */
+    @Bean
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
+    }
+
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
+        return new LifecycleBeanPostProcessor();
+    }
+    /**
+     * 开启shiro aop注解支持时需要这个类
+     * */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
+    }
 
     /**
      * 开启shiro aop注解支持 使用代理方式所以需要开启代码支持
@@ -96,5 +120,22 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    /**
+     * 权限注解生效后由于无权限访问会出现500异常并跳出
+     * 所以要将异常处理
+     * */
+    @Bean
+    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
+        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
+        Properties properties = new Properties();
+
+        /*未授权处理页*/
+        properties.setProperty("org.apache.shiro.authz.UnauthorizedException", "/html/error");
+        /*身份没有验证*/
+        properties.setProperty("org.apache.shiro.authz.UnauthenticatedException", "/login");
+        resolver.setExceptionMappings(properties);
+        return resolver;
     }
 }

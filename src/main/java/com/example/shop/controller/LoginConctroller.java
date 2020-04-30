@@ -1,11 +1,14 @@
 package com.example.shop.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.shop.exception.MyException;
 import com.example.shop.util.VerificationCodeTool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +25,9 @@ import java.io.IOException;
 
 
 @Controller
-public class loginConctroller {
+public class LoginConctroller {
+    private final Logger logger= LoggerFactory.getLogger(LoginConctroller.class);
+
     /****
      * 退出登录
      * @param session
@@ -67,7 +72,7 @@ public class loginConctroller {
     public String  cheklogin(HttpSession session
             ,@RequestParam("uname") String uname
             ,@RequestParam("upswd") String upwsd
-            ,@RequestParam String imgcode){
+            ,@RequestParam String imgcode) throws MyException {
         int status=0;
         String errMsg="";
         String captcha = (String) session.getAttribute("code");
@@ -79,24 +84,32 @@ public class loginConctroller {
         }
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(uname,upwsd);
-        try {
+//        try {
             //token.setRememberMe("1".equals(_remenberme));
             subject.login(token);
-        } catch (IncorrectCredentialsException e) {
-            errMsg="用户名或密码错误！";
-        } catch (LockedAccountException e) {
-            errMsg="帐号已被锁定";
-        } catch (DisabledAccountException e) {
-            errMsg="帐号已被禁用";
-        } catch (ExpiredCredentialsException e) {
-            errMsg="帐号已过期";
-        } catch (UnknownAccountException e) {
-            errMsg="用户不存在";
-        } catch (UnauthorizedException e) {
-            errMsg="您没有得到相应的授权";
-        } catch (Exception e) {
-            errMsg = "登录失败："+e.getClass().getSimpleName()+"<br/>详情："+e.getMessage();
-        }
+//        } catch (IncorrectCredentialsException e) {//
+//            errMsg="用户名或密码错误！";
+//            throw new MyException(errMsg);
+//        } catch (LockedAccountException e) {
+//            errMsg="帐号已被锁定";
+//        } catch (DisabledAccountException e) {
+//            errMsg="帐号已被禁用";
+//        } catch (ExpiredCredentialsException e) {
+//            errMsg="帐号已过期";
+//        } catch (UnknownAccountException e) {
+//            errMsg="用户不存在";
+//        } catch (UnauthorizedException e) {
+//            errMsg="您没有得到相应的授权";
+//        } catch (ExcessiveAttemptsException e) {
+//            errMsg="认证次数超过限制";
+//        } catch (ConcurrentAccessException e) {
+//            errMsg="其他人员正在登陆本账户";
+//        } catch (AuthenticationException e) {
+//            errMsg="数据库密码未加密";
+//        } catch (Exception e) {
+//            errMsg = "登录失败："+e.getClass().getSimpleName()+"<br/>详情："+e.getMessage();
+//            throw new MyException(errMsg);
+//        }
         session.removeAttribute("code");
         if(subject.isAuthenticated()){
             status=1;
