@@ -15,6 +15,11 @@
         margin: 0 auto;
         background-color: white;
         border: 1px solid white;
+        margin-top: 80px;
+    }
+    a{
+        cursor: pointer;
+        color: #1E9FFF;
     }
     </style>
 </head>
@@ -53,7 +58,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-block">
-            <select name="interest" lay-filter="aihao">
+            <select name="rolename" lay-filter="role">
                 <option value=""></option>
                 <option value="0">超级管理员</option>
                 <option value="1" selected="">管理员</option>
@@ -63,7 +68,7 @@
             </select>
         </div>
     </div>
-    <div class="layui-form-item">
+  <!--  <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">开关-默认关</label>
             <div class="layui-input-block">
@@ -76,13 +81,13 @@
                 <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="1" title="男" checked="">
-            <input type="radio" name="sex" value="2" title="女">
-            <input type="radio" name="sex" value="3" title="保密" >
+            <input type="radio" name="usex" value="1" title="男" checked="">
+            <input type="radio" name="usex" value="2" title="女">
+            <input type="radio" name="usex" value="3" title="保密" >
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
@@ -95,6 +100,7 @@
         <div class="layui-input-block">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <div class="layui-inline" style="margin-left: 20px;">已有账号？<a href="/login">去登录</a></div>
         </div>
     </div>
 </form>
@@ -105,7 +111,6 @@
     layui.use(['form'], function(){
         var form = layui.form;
         $=layui.jquery;
-
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
         })

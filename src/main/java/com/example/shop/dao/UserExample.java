@@ -503,6 +503,76 @@ public class UserExample {
             addCriterion("usex not between", value1, value2, "usex");
             return (Criteria) this;
         }
+
+        public Criteria andUtextIsNull() {
+            addCriterion("utext is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextIsNotNull() {
+            addCriterion("utext is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextEqualTo(String value) {
+            addCriterion("utext =", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotEqualTo(String value) {
+            addCriterion("utext <>", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextGreaterThan(String value) {
+            addCriterion("utext >", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextGreaterThanOrEqualTo(String value) {
+            addCriterion("utext >=", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextLessThan(String value) {
+            addCriterion("utext <", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextLessThanOrEqualTo(String value) {
+            addCriterion("utext <=", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextLike(String value) {
+            addCriterion("utext like", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotLike(String value) {
+            addCriterion("utext not like", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextIn(List<String> values) {
+            addCriterion("utext in", values, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotIn(List<String> values) {
+            addCriterion("utext not in", values, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextBetween(String value1, String value2) {
+            addCriterion("utext between", value1, value2, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotBetween(String value1, String value2) {
+            addCriterion("utext not between", value1, value2, "utext");
+            return (Criteria) this;
+        }
     }
 
     /**

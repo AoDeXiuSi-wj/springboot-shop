@@ -1,6 +1,5 @@
 package com.example.shop.shiro;
 
-import com.example.shop.dao.RolePermissionExample;
 import com.example.shop.dao.UserExample;
 import com.example.shop.entity.RolePermission;
 import com.example.shop.entity.User;

@@ -8,6 +8,7 @@
     <result column="utel" jdbcType="VARCHAR" property="utel" />
     <result column="ueml" jdbcType="VARCHAR" property="ueml" />
     <result column="usex" jdbcType="INTEGER" property="usex" />
+    <result column="utext" jdbcType="VARCHAR" property="utext" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    `uid`, uname, upswd, utel, ueml, usex
+    `uid`, uname, upswd, utel, ueml, usex, utext
   </sql>
   <select id="selectByExample" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
     select
@@ -84,25 +85,14 @@
       order by ${orderByClause}
     </if>
   </select>
-
-  <select id="selectByName" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from user
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
-
+    <include refid="Base_Column_List" />
+    from user
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByName" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from user
     where `uid` = #{uid,jdbcType=INTEGER}
@@ -119,9 +109,9 @@
   </delete>
   <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.example.shop.entity.User" useGeneratedKeys="true">
     insert into user (uname, upswd, utel, 
-      ueml, usex)
+      ueml, usex, utext)
     values (#{uname,jdbcType=VARCHAR}, #{upswd,jdbcType=VARCHAR}, #{utel,jdbcType=VARCHAR}, 
-      #{ueml,jdbcType=VARCHAR}, #{usex,jdbcType=INTEGER})
+      #{ueml,jdbcType=VARCHAR}, #{usex,jdbcType=INTEGER}, #{utext,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.example.shop.entity.User" useGeneratedKeys="true">
     insert into user
@@ -141,6 +131,9 @@
       <if test="usex != null">
         usex,
       </if>
+      <if test="utext != null">
+        utext,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uname != null">
@@ -157,6 +150,9 @@
       </if>
       <if test="usex != null">
         #{usex,jdbcType=INTEGER},
+      </if>
+      <if test="utext != null">
+        #{utext,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -187,6 +183,9 @@
       <if test="record.usex != null">
         usex = #{record.usex,jdbcType=INTEGER},
       </if>
+      <if test="record.utext != null">
+        utext = #{record.utext,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -199,7 +198,8 @@
       upswd = #{record.upswd,jdbcType=VARCHAR},
       utel = #{record.utel,jdbcType=VARCHAR},
       ueml = #{record.ueml,jdbcType=VARCHAR},
-      usex = #{record.usex,jdbcType=INTEGER}
+      usex = #{record.usex,jdbcType=INTEGER},
+      utext = #{record.utext,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -222,6 +222,9 @@
       <if test="usex != null">
         usex = #{usex,jdbcType=INTEGER},
       </if>
+      <if test="utext != null">
+        utext = #{utext,jdbcType=VARCHAR},
+      </if>
     </set>
     where `uid` = #{uid,jdbcType=INTEGER}
   </update>
@@ -231,7 +234,8 @@
       upswd = #{upswd,jdbcType=VARCHAR},
       utel = #{utel,jdbcType=VARCHAR},
       ueml = #{ueml,jdbcType=VARCHAR},
-      usex = #{usex,jdbcType=INTEGER}
+      usex = #{usex,jdbcType=INTEGER},
+      utext = #{utext,jdbcType=VARCHAR}
     where `uid` = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>
