@@ -31,11 +31,23 @@ spring:
     password: shop
     #driverClassName: com.mysql.cj.jdbc.Driver
     driver-class-name: com.mysql.jdbc.Driver
+  session:
+    #超时一定要大于0
+    timeout: 3s
+    store-type: redis
   #redis配置
   redis:
     host: 127.0.0.1
     port: 6379
-    password:
+    password: wj
+    jedis:
+      pool:
+        #连接池最大连接数
+        max-active: 8
+        #连接池最大连空闲接数
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
   #热部署
   devtools:
     restart:

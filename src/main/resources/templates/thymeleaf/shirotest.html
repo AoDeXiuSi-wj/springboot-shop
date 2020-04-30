@@ -11,8 +11,16 @@
 <shiro:hasPermission name="insert">
     <label>这个用户有插入权限</label>
 </shiro:hasPermission>
+<br/>
 <shiro:hasPermission name="delete">
     <label>这个用户有删除权限</label>
 </shiro:hasPermission>
+<br/>
+<shiro:hasRole name="dept">
+    <label>这个用户有部门角色</label>
+</shiro:hasRole>
+<br>
+<p>输出当前用户信息，通常为登录帐号信息: <shiro:principal/> </p>
+<p>woc</p>
 </body>
 </html>

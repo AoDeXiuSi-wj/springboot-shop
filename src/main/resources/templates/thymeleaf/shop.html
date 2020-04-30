@@ -41,7 +41,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    ${user}
+                    <shiro:principal/>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -80,8 +80,8 @@
     </div>
 
     <div class="layui-body" id="LAY_app_body">
-        <div class="layadmin-tabsbody-item layui-show">
-            <iframe src="/html/home" frameborder="0" id="myIframe" class="layadmin-iframe"></iframe>
+        <div class="layadmin-tabsbody-item layui-show" style="width: 100%;height: 100%">
+            <iframe src="/html/home" frameborder="0" width="100%" height="100%" id="myIframe" class="layadmin-iframe"></iframe>
         </div>
     </div>
 
