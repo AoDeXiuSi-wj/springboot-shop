@@ -39,7 +39,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: wj
+    password: shop
     jedis:
       pool:
         #连接池最大连接数
@@ -48,15 +48,17 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: -1ms
+    #超时
+    timeout: 5s
   #热部署
   devtools:
     restart:
       enabled: true  #设置开启热部署
       additional-paths: src/main/java #重启目录
-      exclude:
+      exclude: /templates/
   freemarker:
     cache: false    #页面不加载缓存，修改即时生效
-
+###########spring end
 #  jpa:
 #    #是否打印sql语句
 #    show-sql: true

@@ -7,6 +7,8 @@ import java.util.List;
 
 
 public interface UserService {
+    long countByExample(UserExample example);
+
     User selectByPrimaryKey(int uid);
 
     User selectByName(UserExample example);

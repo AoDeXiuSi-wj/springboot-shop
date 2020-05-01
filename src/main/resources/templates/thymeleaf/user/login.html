@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
+    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
     <script src="/all/layui-v2.5.6/layui/lay/modules/jquery.js"></script>
     <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
-    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
 </head>
 <body style="background-color: #fffdf5">
 
@@ -24,20 +24,20 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
-                <input type="text" name="uname" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                <input type="text" name="uname" value="wj" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">密&nbsp;&nbsp;&nbsp;码</label>
             <div class="layui-input-inline">
-                <input type="password" name="upswd" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                <input type="password" name="upswd" value="wj" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
             </div>
             <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">验证码</label>
             <div class="layui-input-inline">
-                <input id="login-code" type="text" name="imgcode" required  lay-verify="required" placeholder="请输入验证码" class="layui-input" style="width: 100%;">
+                <input id="login-code" type="text" value="1" name="imgcode" required  lay-verify="required" placeholder="请输入验证码" class="layui-input" style="width: 100%;">
                 <img src="changeimglogin" id="imgscode" class="imgscode" style="width: 70%;height: 35px;"><a class="imgscode" style="cursor: pointer;">&nbsp;&nbsp;&nbsp;换一个</a>
             </div>
         </div>
@@ -66,20 +66,19 @@
         //监听提交
         form.on('submit(formDemo)', function(data){
             $.ajax({
-                url:"/chklogin",
+                url:"/login/chklogin",
                 type:"post",
                 data:data.field,
                 success:function (msg) {
                     var msgs=eval("("+msg+")");
                     if (msgs.status == 1 ){
-                        window.location.href="/html/shop";
+                        window.location.href="/store/shop";
                     } else{
-                        imgchange();
+                        //imgchange();//刷新验证码
                         layer.alert(msgs.errMsg);
                     }
                 }
             });
-            // layer.msg(JSON.stringify(data.field));
             return false;
         });
         //图片轮播

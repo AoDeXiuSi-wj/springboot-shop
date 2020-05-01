@@ -4,7 +4,6 @@ import com.example.shop.dao.UserExample;
 import com.example.shop.dao.UserMapper;
 import com.example.shop.entity.User;
 import com.example.shop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +13,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
+
+    @Override
+    public long countByExample(UserExample example) {
+        return userMapper.countByExample(example);
+    }
 
     @Override
     public User selectByPrimaryKey(int uid) {

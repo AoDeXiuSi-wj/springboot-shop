@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
+    <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
+</head>
+<body>
+    <table class="layui-hide" id="userTable" lay-filter="mytable"></table>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getInsert" style="width: 35px;margin-left: -5px">
+                <i class="layui-icon layui-icon-add-1" style="font-size: 10px; color: #FFFFFF;"></i>
+            </button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getDelete" style="width: 35px">
+                <i class="layui-icon layui-icon-subtraction" style="font-size: 10px; color: #FFFFFF;"></i>
+            </button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getRefresh" style="width: 35px">
+                <i class="layui-icon layui-icon-refresh-1" style="font-size: 10px; color: #FFFFFF;"></i>
+            </button>
+        </div>
+    </script>
+<script>
+    layui.use(['table','layer'], function(){
+        var table = layui.table
+            ,layer= layui.layer;
+
+        table.render({
+            elem: '#userTable'
+            ,url:'/user/um'
+            ,method: 'post'
+            //,where: {pageIdx:curPageIdx,pageNum:table.config.page.limit}
+            ,height: 'full-180'//表格容器距离浏览器顶部和底部的距离“和”
+            ,loading: true
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: [
+                'filter', 'exports','print'
+                ,{ //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    ,layEvent: 'LAYTABLE_TIPS'
+                    ,icon: 'layui-icon-tips'
+                }
+            ]
+            , title: '用户数据表'
+            , text: {
+                none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+            }
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                [
+                    {type: 'checkbox'}//, fixed: 'left'
+                    ,{field:'uid', width:80, title: 'ID', sort: true}
+                    ,{field:'uname', width:80, title: '用户名'}
+                    ,{field:'usex', width:80, title: '性别', sort: true}
+                    ,{field:'utel', title: '电话', width: '30%', minWidth: 100} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                    ,{field:'ueml', title: '邮箱'}
+                    ///,{field:'utext', width:137, title: '简介'}
+                ]
+            ]
+            ,page: {
+                layout: ['limit', 'prev', 'page', 'next', 'count', 'refresh', 'skip']
+                , skip: 'row'
+                , groups: 4 //连续出现的页码个数
+                , limits: [5, 10, 15, 20, 30]
+                , limit: 15
+                , theme: '#1E9FFF'
+                , jump: function (obj) {
+                    //console.log(obj);
+                    //首次不执行
+                    if (obj.curr != 1) {
+                        //do something
+                    }
+                }
+            }
+        });
+
+        //头工具栏事件
+        table.on('toolbar(mytable)', function(obj){
+            switch(obj.event){
+                case 'getInsert':
+                    layer.open({
+                        type: 2
+                        ,title:'<font color="#1E9FFF"><b>添加新公司</b></font>'
+                        ,anim: 1 //动画
+                        ,area: ['500px', '350px']
+                        ,offset: ['20%', '20%'] //弹框坐标top  left
+                        ,content: '/user/au'
+                        ,end:function () {
+                            table.reload();
+                        }
+                    });
+                    break;
+                case 'getDelete':
+                    layer.confirm('确定删除吗?', {icon: 3,offset: ['30%', '30%'], title: '提示'}, function (index) {
+                        var checkStatus = table.checkStatus(obj.config.id);
+                        var idList='';
+                        for(var i=0;i<checkStatus.data.length;i++){
+                            idList+=checkStatus.data[i].id+',';
+                        }
+                        $.ajax({
+                            type: "get"
+                            ,url: "/crud/info/del"
+                            ,data: {'idList':idList}
+                            ,success: function(data) {
+                                if(data >0) {
+                                    layer.msg("数据已删除！", {icon: 1});
+                                    //tableType.reload();
+                                }else{
+                                    layer.alert("删除失败，请刷新重试！", {icon: 5});
+                                }
+                                layer.closeAll('iframe');//关闭弹窗
+                                tableInfo.reload();
+                            }
+                        });
+                        layer.close(index);
+                    });
+                    break;
+                case 'getRefresh':
+                    tableInfo.reload();
+                    break;
+            };
+        });
+    });
+</script>
+</body>
+</html>
