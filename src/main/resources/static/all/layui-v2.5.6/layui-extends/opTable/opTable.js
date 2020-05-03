@@ -534,7 +534,7 @@ layui.define(['form', 'table'], function (exports) {
   };
 
   //加载组件所需样式
-  layui.link(layui.cache.base + '/opTable.css?v=1' + VERSION, function () {
+  layui.link(layui.cache.base + 'opTable/opTable.css?v=1' + VERSION, function () {
     //此处的“opTable”要对应 opTable.css 中的样式： html #layuicss-opTable{}
   }, 'opTable');
 

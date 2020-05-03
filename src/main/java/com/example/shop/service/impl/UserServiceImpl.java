@@ -1,6 +1,6 @@
 package com.example.shop.service.impl;
-import com.example.shop.dao.UserExample;
 
+import com.example.shop.dao.UserExample;
 import com.example.shop.dao.UserMapper;
 import com.example.shop.entity.User;
 import com.example.shop.service.UserService;
@@ -22,11 +22,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectByPrimaryKey(int uid) {
         return userMapper.selectByPrimaryKey(uid);
-    }
-
-    @Override
-    public User selectByName(UserExample example) {
-        return userMapper.selectByName(example);
     }
 
     @Override

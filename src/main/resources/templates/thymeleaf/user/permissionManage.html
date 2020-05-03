@@ -3,8 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <title>用户权限管理</title>
+    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
+    <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui-extends/opTable/opTable.css">
 </head>
-<body>
-<h2>用户权限管理</h2>
+<body style="margin-top: -8px;padding-bottom: 0px">
+<table class="layui-hide" id="userTable" lay-filter="mytable"></table>
+<!--头部左侧工具栏-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getInsert"
+                style="width: 35px;margin-left: -5px">
+            <i class="layui-icon layui-icon-add-1" style="font-size: 10px; color: #FFFFFF;"></i>
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getDelete" style="width: 35px">
+            <i class="layui-icon layui-icon-subtraction" style="font-size: 10px; color: #FFFFFF;"></i>
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="getRefresh" style="width: 35px">
+            <i class="layui-icon layui-icon-refresh-1" style="font-size: 10px; color: #FFFFFF;"></i>
+        </button>
+    </div>
+</script>
+<!--数据行工具栏-->
+<script type="text/html" id="rowBar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    //配置第三方js插件
+    layui.config({
+        base: '/all/layui-v2.5.6/layui-extends/' //假设这是test.js所在的目录   可以把你需要扩展的js插件都放在一个文件夹内
+    }).extend({ //设定组件别名
+        opTable: 'opTable/opTable'
+    });
+    layui.use(['table','opTable','layer'], function () {
+        var layer = layui.layer
+            ,table= layui.table
+
+        var tableInfo=table.render({
+            elem: '#userTable'
+            , url: '/user/up/data'
+            //,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,loading: true
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,height: 'full-40'//表格容器距离浏览器顶部和底部的距离“和”
+            , title: '用户数据表'//导出表格时，文件名称
+            , text: {
+                none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+            }
+            ,cols: [
+                [
+                    {type: 'checkbox'}//, fixed: 'left'
+                    , {field: 'uid', width: 80, title: 'ID', sort: true}
+                    , {field: 'uname', width: 150, title: '用户名'}
+                    , {field: 'rolenames', width: 300, align: 'left', title: '用户角色'}
+                    , {field: 'permissions', align: 'left', title: '用户权限'}
+                    , {title: '操作', width: 160, align: 'center', toolbar: '#rowBar'}
+                ]
+            ]
+            , page: {
+                layout: ['limit', 'prev', 'page', 'next', 'count', 'refresh', 'skip']
+                , skip: 'row'
+                , groups: 4 //连续出现的页码个数
+                , limits: [5, 10, 15, 20, 30]
+                , limit: 15
+                , theme: '#1E9FFF'
+                , jump: function (obj) {
+                    //console.log(obj);
+                    //首次不执行
+                    if (obj.curr != 1) {
+                        //do something
+                    }
+                }
+            }
+        });
+        //头工具栏事件
+        table.on('toolbar(mytable)', function(obj){
+            switch(obj.event){
+                case 'getInsert':
+                    layer.open({
+                        type: 2
+                        ,title:'<font color="#1E9FFF"><b>添加新用户</b></font>'
+                        ,anim: 1 //动画
+                        ,area: ['500px', '350px']
+                        ,offset: ['20%', '20%'] //弹框坐标top  left
+                        ,content: '/user/au'
+                        ,end:function () {
+                            tableInfo.reload();
+                        }
+                    });
+                    break;
+                case 'getDelete':
+                    if(table.checkStatus(obj.config.id).data.length < 1){
+                        layer.alert(33);
+                        return;
+                    }
+                    layer.confirm('确定删除吗?', {icon: 3,offset: ['30%', '30%'], title: '提示'}, function (index) {
+                        var checkStatus = table.checkStatus(obj.config.id);
+                        var idList='';
+                        for(var i=0;i<checkStatus.data.length;i++){
+                            idList+=checkStatus.data[i].id+',';
+                        }
+                        $.ajax({
+                            type: "get"
+                            ,url: "/crud/info/del"
+                            ,data: {'idList':idList}
+                            ,success: function(data) {
+                                if(data >0) {
+                                    layer.msg("数据已删除！", {icon: 1});
+                                    //tableType.reload();
+                                }else{
+                                    layer.alert("删除失败，请刷新重试！", {icon: 5});
+                                }
+                                layer.closeAll('iframe');//关闭弹窗
+                                tableInfo.reload();
+                            }
+                        });
+                        layer.close(index);
+                    });
+                    break;
+                case 'getRefresh':
+                    tableInfo.reload();
+                    break;
+            }
+        });
+    });
+</script>
 </body>
 </html>

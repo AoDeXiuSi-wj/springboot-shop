@@ -1,6 +1,5 @@
 package com.example.shop.shiro;
 
-import com.example.shop.dao.RolePermissionExample;
 import com.example.shop.dao.UserExample;
 import com.example.shop.entity.RolePermission;
 import com.example.shop.entity.User;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -105,9 +105,9 @@ public class Customrealm extends AuthorizingRealm {
         userExample.or().andUnameEqualTo(username);
         userExample.or().andUtelEqualTo(username);
         userExample.or().andUemlEqualTo(username);
-        User user=userService.selectByName(userExample);
-        if(user != null){
-          return user.getUpswd();
+        List<User> users=userService.selectByExample(userExample);//用户名不会重复，所以结果集只有一个
+        if(users.get(0) != null){
+          return users.get(0).getUpswd();
         }
         return null;
     }

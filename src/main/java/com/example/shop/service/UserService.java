@@ -11,8 +11,6 @@ public interface UserService {
 
     User selectByPrimaryKey(int uid);
 
-    User selectByName(UserExample example);
-
     List<User> selectByExample(UserExample example);
 
 }

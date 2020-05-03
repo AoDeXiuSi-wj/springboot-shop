@@ -1,6 +1,7 @@
 package com.example.shop.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserExample {
@@ -454,53 +455,193 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andUsexEqualTo(Integer value) {
+        public Criteria andUsexEqualTo(String value) {
             addCriterion("usex =", value, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexNotEqualTo(Integer value) {
+        public Criteria andUsexNotEqualTo(String value) {
             addCriterion("usex <>", value, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexGreaterThan(Integer value) {
+        public Criteria andUsexGreaterThan(String value) {
             addCriterion("usex >", value, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUsexGreaterThanOrEqualTo(String value) {
             addCriterion("usex >=", value, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexLessThan(Integer value) {
+        public Criteria andUsexLessThan(String value) {
             addCriterion("usex <", value, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexLessThanOrEqualTo(Integer value) {
+        public Criteria andUsexLessThanOrEqualTo(String value) {
             addCriterion("usex <=", value, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexIn(List<Integer> values) {
+        public Criteria andUsexLike(String value) {
+            addCriterion("usex like", value, "usex");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsexNotLike(String value) {
+            addCriterion("usex not like", value, "usex");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsexIn(List<String> values) {
             addCriterion("usex in", values, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexNotIn(List<Integer> values) {
+        public Criteria andUsexNotIn(List<String> values) {
             addCriterion("usex not in", values, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexBetween(Integer value1, Integer value2) {
+        public Criteria andUsexBetween(String value1, String value2) {
             addCriterion("usex between", value1, value2, "usex");
             return (Criteria) this;
         }
 
-        public Criteria andUsexNotBetween(Integer value1, Integer value2) {
+        public Criteria andUsexNotBetween(String value1, String value2) {
             addCriterion("usex not between", value1, value2, "usex");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextIsNull() {
+            addCriterion("utext is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextIsNotNull() {
+            addCriterion("utext is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextEqualTo(String value) {
+            addCriterion("utext =", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotEqualTo(String value) {
+            addCriterion("utext <>", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextGreaterThan(String value) {
+            addCriterion("utext >", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextGreaterThanOrEqualTo(String value) {
+            addCriterion("utext >=", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextLessThan(String value) {
+            addCriterion("utext <", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextLessThanOrEqualTo(String value) {
+            addCriterion("utext <=", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextLike(String value) {
+            addCriterion("utext like", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotLike(String value) {
+            addCriterion("utext not like", value, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextIn(List<String> values) {
+            addCriterion("utext in", values, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotIn(List<String> values) {
+            addCriterion("utext not in", values, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextBetween(String value1, String value2) {
+            addCriterion("utext between", value1, value2, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtextNotBetween(String value1, String value2) {
+            addCriterion("utext not between", value1, value2, "utext");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtIsNull() {
+            addCriterion("udt is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtIsNotNull() {
+            addCriterion("udt is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtEqualTo(Date value) {
+            addCriterion("udt =", value, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtNotEqualTo(Date value) {
+            addCriterion("udt <>", value, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtGreaterThan(Date value) {
+            addCriterion("udt >", value, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtGreaterThanOrEqualTo(Date value) {
+            addCriterion("udt >=", value, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtLessThan(Date value) {
+            addCriterion("udt <", value, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtLessThanOrEqualTo(Date value) {
+            addCriterion("udt <=", value, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtIn(List<Date> values) {
+            addCriterion("udt in", values, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtNotIn(List<Date> values) {
+            addCriterion("udt not in", values, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtBetween(Date value1, Date value2) {
+            addCriterion("udt between", value1, value2, "udt");
+            return (Criteria) this;
+        }
+
+        public Criteria andUdtNotBetween(Date value1, Date value2) {
+            addCriterion("udt not between", value1, value2, "udt");
             return (Criteria) this;
         }
     }

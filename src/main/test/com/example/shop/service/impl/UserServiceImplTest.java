@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -47,13 +46,4 @@ public class UserServiceImplTest {
         md5Hash.setIterations(1);*/
     }
 
-    @Test
-    public void selectByName() {
-        UserExample userExample=new UserExample();
-        userExample.or().andUnameEqualTo("管理员");
-        userExample.or().andUtelEqualTo("管理员");
-        userExample.or().andUemlEqualTo("管理员");
-        User user=userService.selectByName(userExample);
-        System.out.println("==="+user.toString());
-    }
 }

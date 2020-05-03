@@ -1,15 +1,12 @@
 package com.example.shop.entity;
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * user
  * @author 
  */
-@Component
 public class User implements Serializable {
     /**
      * 唯一标识
@@ -37,9 +34,19 @@ public class User implements Serializable {
     private String ueml;
 
     /**
-     * 1男，2女，3保密
+     * 性别
      */
-    private Integer usex;
+    private String usex;
+
+    /**
+     * 简介
+     */
+    private String utext;
+
+    /**
+     * 注册时间
+     */
+    private Date udt;
 
     private static final long serialVersionUID = 1L;
 
@@ -83,23 +90,27 @@ public class User implements Serializable {
         this.ueml = ueml;
     }
 
-    public Integer getUsex() {
+    public String getUsex() {
         return usex;
     }
 
-    public void setUsex(Integer usex) {
+    public void setUsex(String usex) {
         this.usex = usex;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid=" + uid +
-                ", uname='" + uname + '\'' +
-                ", upswd='" + upswd + '\'' +
-                ", utel='" + utel + '\'' +
-                ", ueml='" + ueml + '\'' +
-                ", usex=" + usex +
-                '}';
+    public String getUtext() {
+        return utext;
+    }
+
+    public void setUtext(String utext) {
+        this.utext = utext;
+    }
+
+    public Date getUdt() {
+        return udt;
+    }
+
+    public void setUdt(Date udt) {
+        this.udt = udt;
     }
 }

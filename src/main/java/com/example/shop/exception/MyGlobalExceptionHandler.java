@@ -50,7 +50,7 @@ public class MyGlobalExceptionHandler {
         errorInfo.setStatus(rep.getStatus());
         errorInfo.setErrType(e.getClass().toString());
         errorInfo.setMsgTitle(ErrorType.getErrorType(e.getClass().getSimpleName()).getErrMsg());
-        errorInfo.setMsgDetail(e.getMessage());
+        errorInfo.setMsgDetail(e.getStackTrace().toString());
         errorInfo.setUrl(req.getRequestURI());
         errorInfo.setData("错误数据");
         logger.error("\033[31;2m" + "全局异常捕捉打印："+ errorInfo.toString() + "\033[0m");

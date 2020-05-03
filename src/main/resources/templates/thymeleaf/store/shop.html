@@ -2,29 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
     <title>study layui</title>
     <script src="/all/layui-v2.5.6/layui/layui.js"></script>
     <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
-    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css" media="all">
     <style>
-        .layui-layout-admin .layui-header,.layui-side-scroll {
+        .layui-layout-admin .layui-header, .layui-side-scroll {
             background-color: #1E9FFF;
         }
-        .layui-nav-tree{
+
+        .layui-nav-tree {
             background-color: #027ddb;
         }
-        .layui-nav-tree .layui-nav-item .layui-nav-child dd{
+
+        .layui-nav-tree .layui-nav-item .layui-nav-child dd {
             background-color: #1393f4;
         }
     </style>
 </head>
-<body>
+<body bgcolor="#E2E2E2">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">商城后台管理</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left" lay-filter="mytype">
-            <li class="layui-nav-item"><a href="javascript:;" data-param="/store/home">首页</a></li>
+            <li class="layui-nav-item"><a href="javascript:;" data-param="/store/home">首页</a>
             <li class="layui-nav-item"><a href="">商品管理</a></li>
             <li class="layui-nav-item">
                 <a href="javascript:;">用户</a>
@@ -60,13 +63,14 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="mytype">
+            <ul class="layui-nav layui-nav-tree" lay-filter="mytype">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">所有商品</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" data-param="/test/test">test</a></dd>
                         <dd><a href="javascript:;">列表二</a></dd>
-                        <dd shiro:hasPermission="delete"><a href="javascript:;" data-param="/test/shirotest">shiro测试</a></dd>
+                        <dd shiro:hasPermission="delete"><a href="javascript:;" data-param="/test/shirotest">shiro测试</a>
+                        </dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
@@ -84,24 +88,29 @@
         </div>
     </div>
 
-    <div class="layui-body" style="width: 100%;height: 100%;overflow-y: hidden;">
-        <div class="layui-tab" style="width: 100%;height: 100%;">
+
+
+
+    <!-- 主体内容 -->
+    <div class="layui-body" id="LAY_app_body" style="overflow: hidden">
+        <!-- 页面标签 -->
+        <div class="layui-tab layui-tab-card" style="margin: 0;height: 100%">
             <ul class="layui-tab-title">
-                <li class="layui-this" id="myTitle">首页</li>
+                <li class="layui-this"><span id="myTitle">首页</span></li>
             </ul>
-            <div class="layui-tab-content" style="width: 100%;height: 100%;">
-                <div class="layui-row layui-show" style="width: 100%;height: 100%;">
-                    <iframe id="myIframe" class="layadmin-iframe" src="/store/home" frameborder="0" width="100%" height="100%" scrolling="auto" ></iframe>
+            <div class="layui-tab-content" style="padding: 0;margin: 0;height: 100%">
+                <div class="layui-tab-item layui-show" style="height: 100%;width: 100%;">
+                    <iframe id="myIframe" class="layadmin-iframe" src="/store/home" frameborder="0" width="100%" height="100%" ></iframe>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         <div class="layui-card" style="background-color: #F2F2F2;">
-            <span style="margin-left: -5px"><a href="http://beian.miit.gov.cn"><img src="/all/img/gov.png" width="20" height="20"/>蜀ICP备20007525</a></span>
+            <span style="margin-left: -5px"><a href="http://beian.miit.gov.cn"><img src="/all/img/gov.png" width="20"
+                                                                                    height="20"/>蜀ICP备20007525</a></span>
             <span style="float:right;"><a href="http://www.jwwj66.xyz">© www.jwwj66.xyz</a></span>
         </div>
     </div>
@@ -109,17 +118,17 @@
 
 <script>
     //JavaScript代码区域
-    layui.use(['element','layer'], function(){
+    layui.use(['element', 'layer'], function () {
         var element = layui.element
-            ,layer  = layui.layer;
-        $=layui.jquery;
+            , layer = layui.layer;
+        $ = layui.jquery;
         //监听导航栏点击
         element.on('nav(mytype)', function (elem) {
-            if(elem.data('param') !== undefined){
-                $("#myIframe").attr("src",elem.data('param'));
+            if (elem.data('param') !== undefined) {
                 $("#myTitle").text(elem.text());
+                $("#myIframe").attr("src", elem.data('param'));
             }
-            //console.log(elem.data('param'))
+            console.log(elem.data('param'))
             //layer.msg(elem.data('param'));
         });
     });

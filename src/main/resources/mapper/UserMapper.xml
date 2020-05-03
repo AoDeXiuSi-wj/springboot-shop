@@ -7,7 +7,9 @@
     <result column="upswd" jdbcType="VARCHAR" property="upswd" />
     <result column="utel" jdbcType="VARCHAR" property="utel" />
     <result column="ueml" jdbcType="VARCHAR" property="ueml" />
-    <result column="usex" jdbcType="INTEGER" property="usex" />
+    <result column="usex" jdbcType="VARCHAR" property="usex" />
+    <result column="utext" jdbcType="VARCHAR" property="utext" />
+    <result column="udt" jdbcType="TIMESTAMP" property="udt" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    `uid`, uname, upswd, utel, ueml, usex
+    `uid`, uname, upswd, utel, ueml, usex, utext, udt
   </sql>
   <select id="selectByExample" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
     select
@@ -84,7 +86,12 @@
       order by ${orderByClause}
     </if>
   </select>
-
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </select>
   <select id="selectByName" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -99,14 +106,6 @@
       order by ${orderByClause}
     </if>
   </select>
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-
-    <include refid="Base_Column_List" />
-    from user
-    where `uid` = #{uid,jdbcType=INTEGER}
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where `uid` = #{uid,jdbcType=INTEGER}
@@ -119,9 +118,11 @@
   </delete>
   <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.example.shop.entity.User" useGeneratedKeys="true">
     insert into user (uname, upswd, utel, 
-      ueml, usex)
+      ueml, usex, utext, 
+      udt)
     values (#{uname,jdbcType=VARCHAR}, #{upswd,jdbcType=VARCHAR}, #{utel,jdbcType=VARCHAR}, 
-      #{ueml,jdbcType=VARCHAR}, #{usex,jdbcType=INTEGER})
+      #{ueml,jdbcType=VARCHAR}, #{usex,jdbcType=VARCHAR}, #{utext,jdbcType=VARCHAR}, 
+      #{udt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.example.shop.entity.User" useGeneratedKeys="true">
     insert into user
@@ -141,6 +142,12 @@
       <if test="usex != null">
         usex,
       </if>
+      <if test="utext != null">
+        utext,
+      </if>
+      <if test="udt != null">
+        udt,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uname != null">
@@ -156,7 +163,13 @@
         #{ueml,jdbcType=VARCHAR},
       </if>
       <if test="usex != null">
-        #{usex,jdbcType=INTEGER},
+        #{usex,jdbcType=VARCHAR},
+      </if>
+      <if test="utext != null">
+        #{utext,jdbcType=VARCHAR},
+      </if>
+      <if test="udt != null">
+        #{udt,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -185,7 +198,13 @@
         ueml = #{record.ueml,jdbcType=VARCHAR},
       </if>
       <if test="record.usex != null">
-        usex = #{record.usex,jdbcType=INTEGER},
+        usex = #{record.usex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utext != null">
+        utext = #{record.utext,jdbcType=VARCHAR},
+      </if>
+      <if test="record.udt != null">
+        udt = #{record.udt,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -199,7 +218,9 @@
       upswd = #{record.upswd,jdbcType=VARCHAR},
       utel = #{record.utel,jdbcType=VARCHAR},
       ueml = #{record.ueml,jdbcType=VARCHAR},
-      usex = #{record.usex,jdbcType=INTEGER}
+      usex = #{record.usex,jdbcType=VARCHAR},
+      utext = #{record.utext,jdbcType=VARCHAR},
+      udt = #{record.udt,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -220,7 +241,13 @@
         ueml = #{ueml,jdbcType=VARCHAR},
       </if>
       <if test="usex != null">
-        usex = #{usex,jdbcType=INTEGER},
+        usex = #{usex,jdbcType=VARCHAR},
+      </if>
+      <if test="utext != null">
+        utext = #{utext,jdbcType=VARCHAR},
+      </if>
+      <if test="udt != null">
+        udt = #{udt,jdbcType=TIMESTAMP},
       </if>
     </set>
     where `uid` = #{uid,jdbcType=INTEGER}
@@ -231,7 +258,9 @@
       upswd = #{upswd,jdbcType=VARCHAR},
       utel = #{utel,jdbcType=VARCHAR},
       ueml = #{ueml,jdbcType=VARCHAR},
-      usex = #{usex,jdbcType=INTEGER}
+      usex = #{usex,jdbcType=VARCHAR},
+      utext = #{utext,jdbcType=VARCHAR},
+      udt = #{udt,jdbcType=TIMESTAMP}
     where `uid` = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>
