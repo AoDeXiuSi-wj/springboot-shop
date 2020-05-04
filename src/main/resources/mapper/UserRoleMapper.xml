@@ -120,6 +120,12 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertList" parameterType="java.util.Arraylist">
+    insert into user(username,rolename) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.username,jdbcType=VARCHAR},#{item.rolename,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
   <select id="countByExample" parameterType="com.example.shop.dao.UserRoleExample" resultType="java.lang.Long">
     select count(*) from user_role
     <if test="_parameter != null">

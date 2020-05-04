@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改用户角色</title>
+    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
+    <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
+</head>
+<body>
+<input id="username" type="hidden" th:value="${username}" />
+<input id="res" type="hidden" />
+<div id="tranDiv" class="demo-transfer" style="padding: 10px"></div>
+</body>
+<script>
+    layui.use(['transfer', 'layer', 'util'], function () {
+        var $ = layui.$
+            , transfer = layui.transfer
+            , layer = layui.layer
+            , util = layui.util;
+
+        var ress=null;
+        $(function () {
+           $.ajax({
+               type:"get"
+               ,url:"/user/qar"
+               ,data: {username:$("#username").val()}
+               ,success:function (res) {
+                   ress=eval("("+res+")");
+                   //roleData=data;
+                   //roleData=JSON.stringify(data);
+                   console.log(res);
+                   transfer.render({
+                       elem: '#tranDiv'
+                       ,title: ['全部角色', '当前角色']  //自定义标题
+                       ,data: ress.data
+                       ,value: ress.exist.split(",")
+                       //穿梭时回调
+                       ,onchange: function(obj, index){
+                           $("#res").val(JSON.stringify(obj));
+                           // var arr = ['左边', '右边'];
+                           // layer.alert('来自 <strong>'+ arr[index] + '</strong> 的数据：'+ JSON.stringify(obj)); //获得被穿梭时的数据
+                       }
+                   })
+               }
+           });
+        });
+
+
+    });
+</script>
+</html>

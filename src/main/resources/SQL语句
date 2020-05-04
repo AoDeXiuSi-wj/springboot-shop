@@ -63,6 +63,6 @@ INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (9, 'dept', 
 
 ---视图
 create view v_user_role as select r.username,GROUP_CONCAT(r.rolename SEPARATOR ',')rolenames from user_role r group by r.username;
-create view v_role_permission as select r.username,GROUP_CONCAT(p.permission SEPARATOR ',') permissions from user_role r left join role_permission p on r.rolename=p.rolename group by r.username;
+create view v_role_permission as select r.username,GROUP_CONCAT(p.permission ORDER BY r.rolename desc,p.permission asc SEPARATOR ',') permissions;
 create view v_user_role_permission as select u.uid,u.uname,v1.rolenames,v2.permissions
 from user u left join v_user_role v1 on u.uname=v1.username left join v_role_permission v2 on v1.username=v2.username;

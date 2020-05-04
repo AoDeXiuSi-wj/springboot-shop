@@ -58,7 +58,15 @@
                     {type: 'checkbox'}//, fixed: 'left'
                     , {field: 'uid', width: 80, title: 'ID', sort: true}
                     , {field: 'uname', width: 150, title: '用户名'}
-                    , {field: 'rolenames', width: 300, align: 'left', title: '用户角色'}
+                    , {field: 'rolenames'
+                       , width: 300
+                       , align: 'left'
+                       , title: '用户角色'
+                       , templet: function (d) {alert(d);
+                         var roles=d.rolenames.split(",");
+
+                       }
+                    }
                     , {field: 'permissions', align: 'left', title: '用户权限'}
                     , {title: '操作', width: 160, align: 'center', toolbar: '#rowBar'}
                 ]

@@ -2,13 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
+    <title>用户权限管理</title>
     <script src="/all/layui-v2.5.6/layui/layui.js"></script>
     <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
     <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
     <link rel="stylesheet" href="/all/layui-v2.5.6/layui-extends/opTable/opTable.css">
 </head>
 <body style="margin-top: -8px;padding-bottom: 0px">
+<span th:id="curUser" style="display: none"><shiro:principal/></span>
 <table class="layui-hide" id="userTable" lay-filter="mytable"></table>
 <!--头部左侧工具栏-->
 <script type="text/html" id="toolbarDemo">
@@ -27,9 +28,9 @@
 </script>
 <!--数据行工具栏-->
 <script type="text/html" id="rowBar">
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <!--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="look">查看</a>-->
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑用户角色</a>
+    <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 </script>
 <script>
     //配置第三方js插件
@@ -39,8 +40,9 @@
         opTable: 'opTable/opTable'
     });
     layui.use(['table','opTable','layer'], function () {
-        var layer = layui.layer
-            ,table= layui.table
+        var $= layui.jquery
+            ,layer = layui.layer
+            ,table= layui.table;
 
         var tableInfo=table.render({
             elem: '#userTable'
@@ -58,9 +60,40 @@
                     {type: 'checkbox'}//, fixed: 'left'
                     , {field: 'uid', width: 80, title: 'ID', sort: true}
                     , {field: 'uname', width: 150, title: '用户名'}
-                    , {field: 'rolenames', width: 300, align: 'left', title: '用户角色'}
-                    , {field: 'permissions', align: 'left', title: '用户权限'}
-                    , {title: '操作', width: 160, align: 'center', toolbar: '#rowBar'}
+                    , {
+                        field: 'rolenames'
+                        ,width: 300
+                        ,align: 'left'
+                        ,title: '用户角色'
+                        ,templet: function (d) {
+                            var html='<span>';
+                            if (d.rolenames != null||d.rolenames != undefined) {
+                                var roles=d.rolenames.split(",");
+                                for(var i=0;i<roles.length;i++){
+                                    html +='<button type="button" class="layui-btn layui-btn-normal layui-btn-sm">'+roles[i]+'</button>';
+                                }
+                            }
+                            html += '</span>';
+                            return html;
+                        }
+                    }
+                    , {
+                        field: 'permissions'
+                        ,align: 'left'
+                        ,title: '用户权限'
+                        ,templet: function (d) {
+                            var html='<span>';
+                            if (d.permissions != null||d.permissions != undefined) {
+                                var powers=d.permissions.split(",");
+                                for(var i=0;i<powers.length;i++){
+                                    html +='<button type="button" class="layui-btn layui-btn-warm layui-btn-sm">'+powers[i]+'</button>';
+                                }
+                            }
+                            html += '</span>';
+                            return html;
+                        }
+                    }
+                    ,{title: '操作', width: 160, align: 'center', toolbar: '#rowBar'}
                 ]
             ]
             , page: {
@@ -79,7 +112,7 @@
                 }
             }
         });
-        //头工具栏事件
+        //头部左侧工具栏事件
         table.on('toolbar(mytable)', function(obj){
             switch(obj.event){
                 case 'getInsert':
@@ -126,6 +159,60 @@
                     break;
                 case 'getRefresh':
                     tableInfo.reload();
+                    break;
+            }
+        });
+
+        //监听数据行工具
+        table.on('tool(mytable)', function (obj) {
+            var data = obj.data;
+            console.log(obj.event);
+            switch (obj.event) {
+                case 'look':
+
+                    break;
+                case 'edit':
+                    layer.open({
+                        type: 2
+                        ,title:'<font color="#1E9FFF"><b>修改用户角色</b></font>'
+                        ,anim: 1 //动画
+                        ,area: ['500px', '480px']
+                        ,offset: ['20%', '20%'] //弹框坐标top  left
+                        ,content: '/user/er?username='+data.uname
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index, layero){
+                            var body = layer.getChildFrame('body', index);
+                            var res=JSON.parse(body.find('input[id=res]').val());
+                            var roles=null;
+                            for (var p in res) {//遍历json数组时，这么写p为索引，0,1
+                                roles += res[p].title + ",";
+                            }
+                            $.ajax({
+                                type: "get"
+                                ,url: "/user/editRole"
+                                ,data: {username:$("#curUser").text(),roles:roles}
+                            });
+                        }
+                        ,btn2: function(index, layero){
+                            //按钮【按钮二】的回调
+
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                        ,cancel: function(){
+                            //右上角关闭回调
+
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                        ,end:function () {
+                            tableInfo.reload();
+                        }
+                    });
+                    break;
+                case 'del':
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
                     break;
             }
         });

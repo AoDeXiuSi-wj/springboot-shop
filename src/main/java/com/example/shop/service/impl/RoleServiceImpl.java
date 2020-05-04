@@ -22,4 +22,16 @@ public class RoleServiceImpl implements RoleService {
         criteria.andUsernameEqualTo(username);
         return userRoleMapper.selectByExample(userRoleExample);
     }
+
+    @Override
+    public List<UserRole> selectByExample(UserRoleExample example) {
+        return userRoleMapper.selectByExample(example);
+    }
+
+    @Override
+    public int insertList(List<UserRole> userList) {
+        return userRoleMapper.insertList(userList);
+    }
+
+
 }
