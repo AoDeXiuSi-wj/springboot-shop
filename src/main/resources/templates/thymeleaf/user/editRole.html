@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -19,26 +20,29 @@
             , layer = layui.layer
             , util = layui.util;
 
-        var ress=null;
+        var roleData=null;//所有角色信息
+        var oldList =[];//当前用户已有角色信息的key集合
+        var newList=[];//当前用户修改角色信息后的key集合
         $(function () {
            $.ajax({
                type:"get"
                ,url:"/user/qar"
                ,data: {username:$("#username").val()}
                ,success:function (res) {
-                   ress=eval("("+res+")");
-                   //roleData=data;
-                   //roleData=JSON.stringify(data);
-                   console.log(res);
+                   var ress = eval("("+res+")");
+                   roleData = ress.data;
+                   oldList=ress.exist.split(",");
                    transfer.render({
                        elem: '#tranDiv'
                        ,title: ['全部角色', '当前角色']  //自定义标题
-                       ,data: ress.data
-                       ,value: ress.exist.split(",")
+                       ,data: roleData
+                       ,value: oldList
                        //穿梭时回调
                        ,onchange: function(obj, index){
-                           $("#res").val(JSON.stringify(obj));
-                           // var arr = ['左边', '右边'];
+                           newList=this.value;
+                           var reRoleData=getEditRoles(oldList,newList);
+                           $("#res").val(JSON.stringify(reRoleData));
+                            //var arr = ['左边', '右边'];
                            // layer.alert('来自 <strong>'+ arr[index] + '</strong> 的数据：'+ JSON.stringify(obj)); //获得被穿梭时的数据
                        }
                    })
@@ -46,7 +50,43 @@
            });
         });
 
+        //得到新增角色、删除角色
+        function getEditRoles(oldList,newList) {
+            var addList=[],delList=[];
+            for (var i=0;i< newList.length;i++) {
+                for(var j=0;j<oldList.length;j++){
+                    if (newList[i] != oldList[j]){
+                        if(oldList.indexOf(newList[i]) ==-1){//得到新增角色的value值
+                            for (var r in roleData){
+                                if (roleData[r].value == newList[i]){
+                                    addList.push(roleData[r].title);//得到新增角色的title值
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            //console.log("addList:"+addList);
+            for (var i=0;i< oldList.length;i++) {
+                for(var j=0;j<newList.length;j++){
+                    if (oldList[i] != newList[j]){
+                        if(newList.indexOf(oldList[i]) ==-1){//得到删除角色的value值
+                            for (var r in roleData){
+                                if (roleData[r].value == oldList[i]){
+                                    delList.push(roleData[r].title);//得到删除角色的title值
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+           console.log("delList:"+delList);
 
+            var dataJson={"addList":addList,"delList":delList};
+            return dataJson;
+        }
     });
 </script>
 </html>

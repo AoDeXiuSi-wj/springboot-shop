@@ -33,5 +33,10 @@ public class RoleServiceImpl implements RoleService {
         return userRoleMapper.insertList(userList);
     }
 
+    @Override
+    public int deleteByExample(UserRoleExample example) {
+        return userRoleMapper.deleteByExample(example);
+    }
+
 
 }

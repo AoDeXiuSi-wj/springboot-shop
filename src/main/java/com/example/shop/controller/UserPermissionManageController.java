@@ -7,6 +7,7 @@ import com.example.shop.dao.VUserRolePermissionExample;
 import com.example.shop.entity.User;
 import com.example.shop.entity.UserRole;
 import com.example.shop.entity.VUserRolePermissionWithBLOBs;
+import com.example.shop.exception.MyException;
 import com.example.shop.service.RoleService;
 import com.example.shop.service.UserService;
 import com.example.shop.service.VUserRolePermissionWithBLOBsService;
@@ -156,6 +157,8 @@ public class UserPermissionManageController {
             if(!temp.contains(ur.getRolename())) {//temp中没有的数据才能放入dataList
                 if("superadmin".equals(ur.getRolename())){
                     json.put("disabled",true);
+                }else if ("user".equals(ur.getRolename())){
+                    json.put("disabled",true);
                 }
                 dataList.add((JSONObject) JSONObject.toJSON(json));
                 temp.add(ur.getRolename());
@@ -172,19 +175,50 @@ public class UserPermissionManageController {
     @RequestMapping("/editRole")
     @ResponseBody
     public int editRole(
-             @RequestParam("username")String username
-            ,@RequestParam("roles")String roles){
-        String[] roleArr = roles.split(",");
-        List<UserRole> roleList = new ArrayList<>();
-        for (int i=0;i<roleArr.length;i++){
-            UserRole ur = new UserRole();
-            ur.setRid(i);
-            ur.setUsername(username);
-            ur.setRolename(roleArr[i]);
-            roleList.add(ur);
+             @RequestParam("username")String _username
+            ,@RequestParam(value = "addList",defaultValue = "")String _addList
+            ,@RequestParam(value = "delList",defaultValue = "")String _delList){
+        int count = 0;
+        int statius = 0;
+        String[] addList=_addList.split(",");
+        String[] delList=_delList.split(",");
+        List<UserRole> addArr = new ArrayList<UserRole>();
+        if (_addList.length() == 0 && _delList.length() == 0){
+            System.out.println("000:"+count);
+            return count;
         }
-        int count=roleService.insertList(roleList);
-        System.out.println("isOk:"+count);
+        if(!"".equals(_addList)){
+            for (int i=0;i<addList.length;i++){
+                UserRole ur = new UserRole();
+                ur.setRid(i);
+                ur.setUsername(_username);
+                ur.setRolename(addList[i]);
+                addArr.add(ur);
+            }
+            count=roleService.insertList(addArr);
+            if (count != addArr.size()){
+                statius += -1;
+                throw new MyException("角色信息添加错误！ClassName:UserPermissionManageController.editRole()");
+            }else {
+                statius += 1;
+            }
+        }
+        if(!"".equals(_delList)){
+            UserRoleExample urExample = new UserRoleExample();
+            UserRoleExample.Criteria urCriteria = urExample.createCriteria();
+            for (int j=0;j<delList.length;j++){
+                urExample.or().andRolenameEqualTo(delList[j]);
+            }
+            urCriteria.andUsernameEqualTo(_username);
+            count=roleService.deleteByExample(urExample);
+            if (count != delList.length){
+                statius += -1;
+                throw new MyException("角色信息删除错误！ClassName:UserPermissionManageController.editRole()");
+            }else {
+                statius += 1;
+            }
+        }
+        System.out.println("count:"+count);
         return count;
     }
 }

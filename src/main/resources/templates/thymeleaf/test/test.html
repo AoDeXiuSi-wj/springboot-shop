@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/all/layui-v2.5.6/layui-extends/opTable/opTable.css">
 </head>
 <body style="margin-top: -8px;padding-bottom: 0px">
-<span th:id="curUser" style="display: none"><shiro:principal/></span>
 <table class="layui-hide" id="userTable" lay-filter="mytable"></table>
 <!--头部左侧工具栏-->
 <script type="text/html" id="toolbarDemo">
@@ -166,7 +165,6 @@
         //监听数据行工具
         table.on('tool(mytable)', function (obj) {
             var data = obj.data;
-            console.log(obj.event);
             switch (obj.event) {
                 case 'look':
 
@@ -182,15 +180,35 @@
                         ,btn: ['确定', '取消']
                         ,yes: function(index, layero){
                             var body = layer.getChildFrame('body', index);
+                            var chooseUserName=body.find('input[id=username]').val();
                             var res=JSON.parse(body.find('input[id=res]').val());
-                            var roles=null;
-                            for (var p in res) {//遍历json数组时，这么写p为索引，0,1
-                                roles += res[p].title + ",";
-                            }
+                            console.log("res:"+JSON.stringify(res));
+                            console.log("res:"+JSON.stringify(res.addList).toString());
+                            console.log("res:"+JSON.stringify(res.delList).toString());
                             $.ajax({
                                 type: "get"
                                 ,url: "/user/editRole"
-                                ,data: {username:$("#curUser").text(),roles:roles}
+                                ,data: {username:chooseUserName,addList:res.addList.toString(),delList:res.delList.toString()}
+                                ,success: function (data) {
+                                    if (data > 0){
+                                        layer.msg('角色修改成功！', {
+                                            icon: 1,
+                                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                        });
+                                        layer.close(index);
+                                    }else if(data === 0){
+                                        layer.msg('您还没有修改角色信息！', {
+                                            icon: 5,
+                                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                        });
+                                    }else{
+                                        layer.msg('角色修改失败！', {
+                                            icon: 2,
+                                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                        });
+                                        layer.close(index);
+                                    }
+                                }
                             });
                         }
                         ,btn2: function(index, layero){

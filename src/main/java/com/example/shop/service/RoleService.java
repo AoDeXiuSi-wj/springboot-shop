@@ -11,4 +11,6 @@ public interface RoleService {
     List<UserRole> selectByExample(UserRoleExample example);
 
     int insertList(List<UserRole> userList);
+
+    int deleteByExample(UserRoleExample example);
 }

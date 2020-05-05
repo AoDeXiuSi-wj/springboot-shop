@@ -120,8 +120,8 @@
       </if>
     </trim>
   </insert>
-  <insert id="insertList" parameterType="java.util.Arraylist">
-    insert into user(username,rolename) values
+  <insert id="insertList" parameterType="java.util.List" keyColumn="rid" keyProperty="rid" useGeneratedKeys="true">
+    insert into user_role(username,rolename) values
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.username,jdbcType=VARCHAR},#{item.rolename,jdbcType=VARCHAR})
     </foreach>

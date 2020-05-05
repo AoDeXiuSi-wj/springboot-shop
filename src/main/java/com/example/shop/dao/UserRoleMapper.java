@@ -16,7 +16,7 @@ public interface UserRoleMapper {
 
     int insertSelective(UserRole record);
 
-    int insertList(List<UserRole> userList);
+    int insertList(List<UserRole> list);
 
     List<UserRole> selectByExample(UserRoleExample example);
 
