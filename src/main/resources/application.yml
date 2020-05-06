@@ -9,6 +9,8 @@ spring:
     view:
       prefix: /templates/
       suffix: .html
+    #出现错误时, 直接抛出异常
+    throw-exception-if-no-handler-found: true
   #thymelea模板配置
   thymeleaf:
     #thymeleaf 所在路径
@@ -16,28 +18,55 @@ spring:
     #thymeleaf 后缀
     suffix: .html
     #thymeleaf 采用的标准
-    mode: HTML5
+    mode: LEGACYHTML5 #HTML5
     #thymeleaf 编码格式
     encoding: UTF-8
     #缓存
     cache: false
     servlet:
       content-type: text/html
+  mail:
+    default-encoding: utf-8
+    host: smtp.qq.com
+    username: 2874552705@qq.com
+    password: ntwkytnzulkgdhba
+    properties.mail.smtp.auth:  true
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
   datasource:
     url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: shop
     password: shop
     #driverClassName: com.mysql.cj.jdbc.Driver
     driver-class-name: com.mysql.jdbc.Driver
+  session:
+    #超时一定要大于0
+    timeout: 3s
+    store-type: redis
+  #redis配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: shop
+    jedis:
+      pool:
+        #连接池最大连接数
+        max-active: 8
+        #连接池最大连空闲接数
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+    #超时
+    timeout: 5s
   #热部署
   devtools:
     restart:
       enabled: true  #设置开启热部署
       additional-paths: src/main/java #重启目录
-      exclude:
+      exclude: /templates/
   freemarker:
     cache: false    #页面不加载缓存，修改即时生效
-
+###########spring end
 #  jpa:
 #    #是否打印sql语句
 #    show-sql: true
