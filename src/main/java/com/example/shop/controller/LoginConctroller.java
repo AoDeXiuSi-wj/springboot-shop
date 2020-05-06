@@ -23,7 +23,6 @@ import java.io.IOException;
 
 
 @Controller
-@RequestMapping("/login")
 public class LoginConctroller {
     private final Logger logger= LoggerFactory.getLogger(LoginConctroller.class);
     /****
@@ -44,7 +43,7 @@ public class LoginConctroller {
         if (subject != null) {
             subject.logout();
         }
-        return "thymeleaf/user/login";
+        return "redirect:/login";
     }
     /***
      * 验证登录

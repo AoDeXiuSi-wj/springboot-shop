@@ -239,13 +239,14 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/all/**", "anon");
-        filterChainDefinitionMap.put("/login/**", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/chklogin", "anon");
         filterChainDefinitionMap.put("/test/test", "anon");
         filterChainDefinitionMap.put("/error/error", "anon");
         //拦截其他所以接口
         filterChainDefinitionMap.put("/**", "authc");
         //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
-        shiroFilterFactoryBean.setLoginUrl("/login/login");
+        shiroFilterFactoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的链接 自行处理。不用shiro进行跳转
         shiroFilterFactoryBean.setSuccessUrl("/store/shop");
         //访问没有权限注解如@RequiresRole的未授权界面时，跳转;
