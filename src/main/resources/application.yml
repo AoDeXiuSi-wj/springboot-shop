@@ -29,7 +29,8 @@ spring:
     default-encoding: utf-8
     host: smtp.qq.com
     username: 2874552705@qq.com
-    password: ntwkytnzulkgdhba
+    password: kvmayfdnggwideeb #授权码不是登录密码
+    #安全设置不被拦截到垃圾箱
     properties.mail.smtp.auth:  true
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true

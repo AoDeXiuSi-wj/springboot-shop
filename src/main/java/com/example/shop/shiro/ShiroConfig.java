@@ -244,6 +244,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/chklogin", "anon");
         filterChainDefinitionMap.put("/changeimglogin", "anon");
         filterChainDefinitionMap.put("/getCheckCode", "anon");
+        filterChainDefinitionMap.put("/chkregister", "anon");
         filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/test/test", "anon");
         filterChainDefinitionMap.put("/error/error", "anon");

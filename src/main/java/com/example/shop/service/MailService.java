@@ -21,14 +21,30 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /***
+     * 普通邮件
+     * @param to 接收者
+     * @param title 邮箱标题
+     * @param content 邮箱内容
+     * */
     public void sendSimpleMail(String to, String title,String content){
         SimpleMailMessage message= new SimpleMailMessage();
-        message.setFrom(from);
+        message.setFrom(from);//发送者
         message.setTo(to);
         message.setSubject(title);
         message.setText(content);
+        mailSender.send(message);
         logger.info("邮件发送成功");
     }
+
+    /**
+     * 带附件的邮件
+     * @param to
+     * @param title
+     * @param cotent
+     * @param fileList
+     */
     public void sendAttachmentsMail(String to, String title, String cotent, List<File> fileList){
         MimeMessage message = mailSender.createMimeMessage();
         try {

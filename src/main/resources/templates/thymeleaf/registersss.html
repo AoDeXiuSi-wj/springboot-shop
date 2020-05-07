@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>注册</title>
+    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
+    <script src="/all/layui-v2.5.6/layui/lay/modules/jquery.js"></script>
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
+    <link rel="stylesheet" href="/all/css/admin.css">
+    <link rel="stylesheet" href="/all/css/layer.css">
+    <link rel="stylesheet" href="/all/css/login.css">
+
+</head>
+<body>
+<button class="layui-btn layui-btn-normal" id="testwj">test</button>
+
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'user'], function(){
+        var $ = layui.jquery
+         //   ,setter = layui.setter
+         //   ,admin = layui.admin
+            ,form = layui.form
+        layui.$('#testwj').on('click', function(){
+            layer.alert(666);
+        });
+         //   ,router = layui.router();
+
+       //form.render();
+
+        //提交
+     /*   form.on('submit(LAY-user-reg-submit)', function(obj){
+            var field = obj.field;
+
+            //确认密码
+            if(field.password !== field.repass){
+                return layer.msg('两次密码输入不一致');
+            }
+
+            //是否同意用户协议
+            if(!field.agreement){
+                return layer.msg('你必须同意用户协议才能注册');
+            }
+
+            //请求接口
+            admin.req({
+                url: layui.setter.base + 'json/user/reg.js' //实际使用请改成服务端真实接口
+                ,data: field
+                ,done: function(res){
+                    layer.msg('注册成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        location.hash = '/user/login'; //跳转到登入页
+                    });
+                }
+            });
+
+            return false;
+        });
+
+        //验证码
+        var checkCode = "";
+        $("#sendCheckCode").on('click',function () {
+            alert("sfasdf");
+            layer.msg("sdafsdf");
+            var email=$("#LAY-user-login-email").val();
+            if(email == null || email == ""){
+              return  layer.msg("请输入邮箱！！！");
+            }
+            var index = layer.open({
+                type:3,
+                content:"邮件发送中..."
+            });
+            $.ajax({
+                url:"/getCheckCode?email="+email,
+                type:"get",
+                success:function (text) {
+                    if (text !=null && text != "") {
+                        layer.close(index);
+                        layer.msg("已发送");
+                        checkCode = text;
+                        countDown();
+                    }else{
+                        layer.alert("验证码获取失败，请重新获取");
+                    }
+                }
+            })
+        })
+        var maxTime =60;
+        function  countDown() {
+            if (maxTime == 0){
+                checkCode = "";
+                $("#sendCheckCode").removeClass("layui-btn-disabled");
+                $("#sendCheckCode").removeAttr("disabled")
+                $("#sendCheckCode").html("获取验证码");
+                maxTime = 60;
+            }else{
+                $("#sendCheckCode").attr("disabled","disabled");
+                $("#sendCheckCode").addClass("layui-btn-disabled");
+                form.render();
+                $("#sendCheckCode").html(maxTime+"秒后重新获取");
+                maxTime--;
+                setTimeout(countDown,1000);
+            }
+        }*/
+    });
+</script>
+</body>
+</html>
