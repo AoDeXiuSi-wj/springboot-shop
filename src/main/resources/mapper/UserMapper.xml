@@ -93,9 +93,17 @@
   </select>
   <select id="selectByName" parameterType="com.example.shop.dao.UserExample" resultMap="BaseResultMap">
     select
+    <if test="distinct">
+      distinct
+    </if>
     <include refid="Base_Column_List" />
     from user
-    where `uid` = #{uid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user

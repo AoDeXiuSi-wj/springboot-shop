@@ -29,21 +29,21 @@
             </div>
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-repass"></label>
-                <input type="password" name="repass" id="LAY-user-login-repass" lay-verify="required|pass" placeholder="确认密码" autocomplete="off"  class="layui-input">
+                <input type="password" name="repass" id="LAY-user-login-repass" lay-verify="required|pass" placeholder="确认密码" autocomplete="off"    class="layui-input">
             </div>
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone" for="LAY-user-login-cellphone"></label>
-                <input type="text" name="cellphone" id="LAY-user-login-cellphone" lay-verify="phone" placeholder="手机" class="layui-input">
+                <input type="text" name="cellphone" id="LAY-user-login-cellphone" lay-verify="required|phone" placeholder="手机" class="layui-input">
             </div>
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-email" for="LAY-user-login-email"></label>
-                <input type="text" name="email"  id="LAY-user-login-email" lay-verify="email" autocomplete="off"  placeholder="邮箱" class="layui-input email">
+                <input type="text" name="email"  id="LAY-user-login-email" lay-verify="required|email"  placeholder="邮箱" class="layui-input email">
             </div>
             <div class="layui-form-item">
                 <div class="layui-row">
                     <div class="layui-col-xs7">
                         <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
-                        <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required" placeholder="邮箱验证码" class="layui-input">
+                        <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required" placeholder="邮箱验证码" autocomplete="off"  class="layui-input">
                     </div>
                     <div class="layui-col-xs5">
                         <div style="margin-left: 10px;">
@@ -86,12 +86,23 @@
         var layer=layui.layer;
        var  $=layui.jquery;
        var checkCode = "";
+        $(function () {
+            $("#LAY-user-login-email").on('input', function(){
+                var email = this.value;
+                var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                if(!reg.test(email)){
+                    return layer.tips("邮箱格式不正确！",this);
+                }
+            })
+        })
+
         //验证码
         $("#sendCheckCode").on('click', function(){
+
             var email = $(".email").val();
-            if (email == null || email == ""){
-                layer.msg("请输入邮箱！！！");
-                return;
+            var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+            if(!reg.test(email)){
+                return layer.tips("邮箱格式不正确！",this);
             }
             var index = layer.open({
                 type:3,
@@ -108,6 +119,7 @@
                         countDown();
                     } else{
                         layer.alert("获取失败，请重新获取")
+
                     }
                 }
             });
@@ -152,14 +164,17 @@
                 , success: function (res) {
                    var msgs=eval("("+res+")");
                    if (msgs.status == 1 ){
-                       window.location.href="/login";
-                   } else{
-                       layer.alert(msgs.masg);
+                       layer.alert(msgs.msg);
+                       setTimeout(window.location.href="/login",3000);
+                   } else if(msgs.status == 0 ){
+                       layer.alert(msgs.msg);
+                   }else {
+                       layer.alert(msgs.msg);
                    }
                 }
             });
         }else{
-            return  layer.msg('验证码错误',{icon:1});
+            return  layer.msg('验证码错误',{icon:2});
         }
         return false;
     });
