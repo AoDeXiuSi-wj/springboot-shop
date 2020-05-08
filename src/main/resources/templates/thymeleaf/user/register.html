@@ -174,8 +174,12 @@
                 , success: function (res) {
                    var msgs=eval("("+res+")");
                    if (msgs.status == 1 ){
-                       layer.alert(msgs.msg);
-                       setTimeout(window.location.href="/login",3000);
+                       layer.msg(msgs.msg, {
+                           icon: 1,
+                           time: 3000 //2秒关闭（如果不配置，默认是3秒）
+                       }, function(){
+                           window.location.href="/login";
+                       });
                    } else if(msgs.status == 0 ){
                        layer.alert(msgs.msg);
                    }else {

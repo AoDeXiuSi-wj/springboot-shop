@@ -96,7 +96,7 @@
                 success:function (msg) {
                     var msgs=eval("("+msg+")");
                     if (msgs.status == 1 ){
-                        window.location.href="/html/shop";
+                        window.location.href="/store/shop";
                     } else{
                         layer.alert(msgs.errMsg);
                         imgchange();

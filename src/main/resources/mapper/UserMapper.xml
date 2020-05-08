@@ -113,6 +113,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </select>
   <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.example.shop.entity.User" useGeneratedKeys="true">
     insert into user (uname, upswd, utel, 
       ueml, usex, utext,

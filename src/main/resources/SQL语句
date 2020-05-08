@@ -14,55 +14,127 @@ create table user
   uid   int auto_increment
   comment '唯一标识'
     primary key,
-  uname varchar(20) not null
+  uname varchar(20)  not null
   comment '用户名',
-  upswd varchar(50) null
+  upswd varchar(50)  null
   comment '密码',
-  utel  varchar(11) not null
+  utel  varchar(11)  not null
   comment '电话',
-  ueml  varchar(50) null
+  ueml  varchar(50)  null
   comment '邮箱',
-  usex  int         not null
-  comment '1男，2女，3保密'
+  usex  varchar(10)  not null
+  comment '性别',
+  utext varchar(400) null
+  comment '简介',
+  udt   datetime     not null
+  comment '注册时间'
 )
   comment '用户表';
-INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (2, 'wj', 'wj', '111', '222', 1);
-INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (3, 'jw', 'jw', '333', '444', 1);
-INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (4, 'ww', 'ww', '555', '666', 2);
-INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex) VALUES (5, 'jj', 'jj', '777', '888', 2);
 
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (1, '管理员', 'admin', '000', '000', '3', '', null);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (2, 'wj', 'eeef861ec8f31538eab5dcb19ef81175', '111', '222', '男', '我是开发人员', '2020-05-02 06:30:58');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (3, 'jw', '3e5e06466d0a3e9bbe0d5012a420beee', '333', '444', '男', null, null);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (4, 'ww', 'fc76c2e917678409752a1c13f8e62e96', '555', '666', '女', null, null);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (5, 'jj', 'jj', '777', '888', '保密', null, null);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (6, '11', '11', '11', '11', '1', null, null);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (7, 'cs', 'cs', '15730789363', '844014845@qq.com', '3', null, null);
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (8, '11', '11', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (9, '22', '22', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (10, '33', '33', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (11, '44', '44', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (12, '55', '55', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (13, '66', '66', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (14, '77', '77', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (15, '88', '88', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (16, '99', '99', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (17, '1122', '1122', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (18, '3344', '2233', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (19, '5566', '3344', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (20, '7788', '4455', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
+INSERT INTO shop.user (uid, uname, upswd, utel, ueml, usex, utext, udt) VALUES (21, '8899', '5566', '15730789363', '844014845@qq.com', '保密', null, '2020-05-02 08:52:47');
 --role角色表
-CREATE TABLE user_role
+create table user_role
 (
-    rid int PRIMARY KEY COMMENT '唯一标识符' AUTO_INCREMENT,
-    username varchar(20) NOT NULL COMMENT '用户名称',
-    rolename varchar(20) NOT NULL COMMENT '角色名称'
+  rid      int auto_increment
+  comment '唯一标识符'
+    primary key,
+  username varchar(20) null
+  comment '用户名称',
+  rolename varchar(20) not null
+  comment '角色名称'
 );
-INSERT INTO shop.user_role (rid, username, rolename) VALUES (1, 'wj', 'superadmin');
-INSERT INTO shop.user_role (rid, username, rolename) VALUES (2, 'jw', 'superadmin');
-INSERT INTO shop.user_role (rid, username, rolename) VALUES (3, 'ww', 'admin');
-INSERT INTO shop.user_role (rid, username, rolename) VALUES (4, 'jj', 'user');
-INSERT INTO shop.user_role (rid, username, rolename) VALUES (5, 'wj', 'dept');
----role_permission角色权限表
-CREATE TABLE role_permission
-(
-    pid int PRIMARY KEY COMMENT '唯一标识符' AUTO_INCREMENT,
-    rolename varchar(20) NOT NULL COMMENT '角色名称',
-    permission varchar(50) NOT NULL COMMENT '权限'
-);
-ALTER TABLE role_permission COMMENT = '权限表';
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (1, 'superadmin', 'query');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (2, 'superadmin', 'insert');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (3, 'superadmin', 'update');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (4, 'superadmin', 'delete');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (5, 'admin', 'query');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (6, 'admin', 'insert');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (7, 'admin', 'update');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (8, 'user', 'query');
-INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (9, 'dept', 'look');
 
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (1, 'wj', '超级管理员');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (2, 'jw', '超级管理员');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (3, 'ww', '管理员');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (180, null, '普通用户');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (190, 'jj', '普通用户');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (193, null, '行政部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (194, null, '开发部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (196, '33', '管理员');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (197, '44', '开发部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (198, '55', '行政部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (203, '11', '行政部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (204, null, '超级管理员');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (206, 'jj', '行政部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (207, 'jj', '开发部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (208, '22', '开发部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (209, 'cs', '开发部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (210, '11', '开发部');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (211, null, '管理员');
+INSERT INTO shop.user_role (rid, username, rolename) VALUES (213, '管理员', '管理员');
+---role_permission角色权限表
+create table role_permission
+(
+  pid        int auto_increment
+  comment '唯一标识符'
+    primary key,
+  rolename   varchar(20) null
+  comment '角色名称',
+  permission varchar(50) not null
+  comment '权限'
+)
+  comment '权限表';
+
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (1, '超级管理员', '查询用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (2, '超级管理员', '添加用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (3, '超级管理员', '修改用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (4, '超级管理员', '删除用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (5, '管理员', '查询用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (6, '管理员', '添加用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (7, '管理员', '修改用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (9, '行政部', '修改用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (10, '开发部', '添加用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (11, null, '查询用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (12, null, '添加用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (13, null, '修改用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (14, null, '删除用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (16, '普通用户', '修改用户');
+INSERT INTO shop.role_permission (pid, rolename, permission) VALUES (17, '普通用户', '查询用户');
 ---视图
-create view v_user_role as select r.username,GROUP_CONCAT(r.rolename SEPARATOR ',')rolenames from user_role r group by r.username;
-create view v_user_permission as select r.username,GROUP_CONCAT(p.permission ORDER BY r.rolename desc,p.permission asc SEPARATOR ',') permissions;
-create view v_user_role_permission as select u.uid,u.uname,v1.rolenames,v2.permissions
-from user u left join v_user_role v1 on u.uname=v1.username left join v_user_permission v2 on v1.username=v2.username;
+create view v_role_permission as
+  select `u`.`rid` AS `rid`, `r`.`rolename` AS `rolename`, group_concat(`r`.`permission` separator ',') AS `permissions`
+  from (`shop`.`user_role` `u` left join `shop`.`role_permission` `r` on ((`r`.`rolename` = `u`.`rolename`)))
+  where (isnull(`u`.`username`) or (`u`.`username` = ''))
+  group by `r`.`rolename`;
+
+create view v_user_permission as
+  select `r`.`username`    AS `username`,
+         group_concat(`p`.`permission` order by `r`.`rolename` DESC, `p`.`permission` ASC separator
+                      ',') AS `permissions`
+  from (`shop`.`user_role` `r` left join `shop`.`role_permission` `p` on ((`r`.`rolename` = `p`.`rolename`)))
+  group by `r`.`username`;
+
+create view v_user_role as
+  select `r`.`username` AS `username`, group_concat(`r`.`rolename` separator ',') AS `rolenames`
+  from `shop`.`user_role` `r`
+  group by `r`.`username`;
+
+create view v_user_role_permission as
+  select `u`.`uid`          AS `uid`,
+         `u`.`uname`        AS `uname`,
+         `v1`.`rolenames`   AS `rolenames`,
+         `v2`.`permissions` AS `permissions`
+  from ((`shop`.`user` `u` left join `shop`.`v_user_role` `v1` on ((`u`.`uname` =
+                                                                    `v1`.`username`))) left join `shop`.`v_user_permission` `v2` on ((
+    `v1`.`username` = `v2`.`username`)));

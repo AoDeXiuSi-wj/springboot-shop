@@ -110,6 +110,14 @@ public class User implements Serializable {
         this.utext = utext;
     }
 
+    public Date getUdt() {
+        return udt;
+    }
+
+    public void setUdt(Date udt) {
+        this.udt = udt;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -118,22 +126,9 @@ public class User implements Serializable {
                 ", upswd='" + upswd + '\'' +
                 ", utel='" + utel + '\'' +
                 ", ueml='" + ueml + '\'' +
-                ", usex=" + usex +
+                ", usex='" + usex + '\'' +
                 ", utext='" + utext + '\'' +
+                ", udt=" + udt +
                 '}';
-    public String getUtext() {
-        return utext;
-    }
-
-    public void setUtext(String utext) {
-        this.utext = utext;
-    }
-
-    public Date getUdt() {
-        return udt;
-    }
-
-    public void setUdt(Date udt) {
-        this.udt = udt;
     }
 }

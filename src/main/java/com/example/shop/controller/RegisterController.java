@@ -19,7 +19,7 @@ public class RegisterController {
     private UserService service;
     @RequestMapping("/register")
     public String register(){
-        return "thymeleaf/register";
+        return "thymeleaf/user/register";
     }
 
     @RequestMapping("/chkregister")
@@ -47,7 +47,7 @@ public class RegisterController {
             user.setUpswd(password.trim());
             user.setUtel(cellphone.trim());
             user.setUeml(email.trim());
-            user.setUsex(3);
+            user.setUsex("保密");
             status=service.insert(user);
             if(status == 1) {
                 msg = "注册成功";

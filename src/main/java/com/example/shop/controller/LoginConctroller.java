@@ -1,11 +1,14 @@
 package com.example.shop.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.shop.exception.MyException;
 import com.example.shop.util.VerificationCodeTool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +33,7 @@ public class LoginConctroller {
      */
     @RequestMapping("/login")
     public String login(){
-        return "thymeleaf/login";
+        return "thymeleaf/user/login";
     }
     /****
      * 登出
