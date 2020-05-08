@@ -241,7 +241,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/all/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/chklogin", "anon");
-        filterChainDefinitionMap.put("/test/test", "anon");
+        filterChainDefinitionMap.put("/test/**", "anon");
         filterChainDefinitionMap.put("/error/error", "anon");
         //拦截其他所以接口
         filterChainDefinitionMap.put("/**", "authc");

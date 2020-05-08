@@ -13,6 +13,8 @@ public interface RolePermissionMapper {
 
     int insert(RolePermission record);
 
+    int insertList(List<RolePermission> list);
+
     int insertSelective(RolePermission record);
 
     List<RolePermission> selectByExample(RolePermissionExample example);

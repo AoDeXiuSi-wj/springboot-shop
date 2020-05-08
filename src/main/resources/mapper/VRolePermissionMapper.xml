@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.shop.dao.RolePermissionMapper">
-  <resultMap id="BaseResultMap" type="com.example.shop.entity.RolePermission">
-    <id column="pid" jdbcType="INTEGER" property="pid" />
+<mapper namespace="com.example.shop.dao.VRolePermissionMapper">
+  <resultMap id="BaseResultMap" type="com.example.shop.entity.VRolePermission">
+    <result column="rid" jdbcType="INTEGER" property="rid" />
     <result column="rolename" jdbcType="VARCHAR" property="rolename" />
-    <result column="permission" jdbcType="VARCHAR" property="permission" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.shop.entity.VRolePermission">
+    <result column="permissions" jdbcType="LONGVARCHAR" property="permissions" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,15 +67,20 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    pid, rolename, permission
+    rid, rolename
   </sql>
-  <select id="selectByExample" parameterType="com.example.shop.dao.RolePermissionExample" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    permissions
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.example.shop.dao.VRolePermissionExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from role_permission
+    ,
+    <include refid="Blob_Column_List" />
+    from v_role_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -81,101 +88,95 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+  <select id="selectByExample" parameterType="com.example.shop.dao.VRolePermissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
     <include refid="Base_Column_List" />
-    from role_permission
-    where pid = #{pid,jdbcType=INTEGER}
+    from v_role_permission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from role_permission
-    where pid = #{pid,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.example.shop.dao.RolePermissionExample">
-    delete from role_permission
+  <delete id="deleteByExample" parameterType="com.example.shop.dao.VRolePermissionExample">
+    delete from v_role_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="pid" keyProperty="pid" parameterType="com.example.shop.entity.RolePermission" useGeneratedKeys="true">
-    insert into role_permission (rolename, permission)
-    values (#{rolename,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.example.shop.entity.VRolePermission">
+    insert into v_role_permission (rid, rolename, permissions
+      )
+    values (#{rid,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR}, #{permissions,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="pid" keyProperty="pid" parameterType="com.example.shop.entity.RolePermission" useGeneratedKeys="true">
-    insert into role_permission
+  <insert id="insertSelective" parameterType="com.example.shop.entity.VRolePermission">
+    insert into v_role_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        rid,
+      </if>
       <if test="rolename != null">
         rolename,
       </if>
-      <if test="permission != null">
-        permission,
+      <if test="permissions != null">
+        permissions,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rid != null">
+        #{rid,jdbcType=INTEGER},
+      </if>
       <if test="rolename != null">
         #{rolename,jdbcType=VARCHAR},
       </if>
-      <if test="permission != null">
-        #{permission,jdbcType=VARCHAR},
+      <if test="permissions != null">
+        #{permissions,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-
-  <insert id="insertList" parameterType="java.util.List" keyColumn="pid" keyProperty="pid" useGeneratedKeys="true">
-    insert into role_permission(rolename,permission) values
-    <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.rolename,jdbcType=VARCHAR},#{item.permission,jdbcType=VARCHAR})
-    </foreach>
-  </insert>
-
-  <select id="countByExample" parameterType="com.example.shop.dao.RolePermissionExample" resultType="java.lang.Long">
-    select count(*) from role_permission
+  <select id="countByExample" parameterType="com.example.shop.dao.VRolePermissionExample" resultType="java.lang.Long">
+    select count(*) from v_role_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update role_permission
+    update v_role_permission
     <set>
-      <if test="record.pid != null">
-        pid = #{record.pid,jdbcType=INTEGER},
+      <if test="record.rid != null">
+        rid = #{record.rid,jdbcType=INTEGER},
       </if>
       <if test="record.rolename != null">
         rolename = #{record.rolename,jdbcType=VARCHAR},
       </if>
-      <if test="record.permission != null">
-        permission = #{record.permission,jdbcType=VARCHAR},
+      <if test="record.permissions != null">
+        permissions = #{record.permissions,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update v_role_permission
+    set rid = #{record.rid,jdbcType=INTEGER},
+      rolename = #{record.rolename,jdbcType=VARCHAR},
+      permissions = #{record.permissions,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update role_permission
-    set pid = #{record.pid,jdbcType=INTEGER},
-      rolename = #{record.rolename,jdbcType=VARCHAR},
-      permission = #{record.permission,jdbcType=VARCHAR}
+    update v_role_permission
+    set rid = #{record.rid,jdbcType=INTEGER},
+      rolename = #{record.rolename,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.shop.entity.RolePermission">
-    update role_permission
-    <set>
-      <if test="rolename != null">
-        rolename = #{rolename,jdbcType=VARCHAR},
-      </if>
-      <if test="permission != null">
-        permission = #{permission,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where pid = #{pid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.shop.entity.RolePermission">
-    update role_permission
-    set rolename = #{rolename,jdbcType=VARCHAR},
-      permission = #{permission,jdbcType=VARCHAR}
-    where pid = #{pid,jdbcType=INTEGER}
   </update>
 </mapper>

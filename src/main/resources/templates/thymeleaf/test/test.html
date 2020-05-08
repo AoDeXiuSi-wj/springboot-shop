@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
-    <title>用户权限管理</title>
+    <title>角色管理</title>
     <script src="/all/layui-v2.5.6/layui/layui.js"></script>
     <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
     <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
@@ -28,7 +28,7 @@
 <!--数据行工具栏-->
 <script type="text/html" id="rowBar">
     <!--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="look">查看</a>-->
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑用户角色</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑角色权限</a>
     <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 </script>
 <script>
@@ -43,56 +43,55 @@
             ,layer = layui.layer
             ,table= layui.table;
 
+        var rowRolename="";
         var tableInfo=table.render({
             elem: '#userTable'
-            , url: '/user/up/data'
+            , url: '/user/rm/data'
             //,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,loading: true
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,height: 'full-40'//表格容器距离浏览器顶部和底部的距离“和”
-            , title: '用户数据表'//导出表格时，文件名称
+            , title: '角色数据表'//导出表格时，文件名称
             , text: {
                 none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
             }
             ,cols: [
                 [
                     {type: 'checkbox'}//, fixed: 'left'
-                    , {field: 'uid', width: 80, title: 'ID', sort: true}
-                    , {field: 'uname', width: 150, title: '用户名'}
-                    , {
-                        field: 'rolenames'
-                        ,width: 300
-                        ,align: 'left'
-                        ,title: '用户角色'
-                        ,templet: function (d) {
-                            var html='<span>';
-                            if (d.rolenames != null||d.rolenames != undefined) {
-                                var roles=d.rolenames.split(",");
-                                for(var i=0;i<roles.length;i++){
-                                    html +='<button type="button" class="layui-btn layui-btn-normal layui-btn-sm">'+roles[i]+'</button>';
-                                }
-                            }
-                            html += '</span>';
-                            return html;
-                        }
+                    , {field: 'rid', width: 80, title: 'ID', sort: true}
+                    , {field: 'rolename',width: 300,align: 'left',title: '角色名称'
+                    ,templet: function (d) {
+                        rowRolename=d.rolename;
+                        return '<span>'+rowRolename+'</span>';
                     }
+                }
                     , {
-                        field: 'permissions'
-                        ,align: 'left'
-                        ,title: '用户权限'
-                        ,templet: function (d) {
-                            var html='<span>';
-                            if (d.permissions != null||d.permissions != undefined) {
-                                var powers=d.permissions.split(",");
-                                for(var i=0;i<powers.length;i++){
-                                    html +='<button type="button" class="layui-btn layui-btn-warm layui-btn-sm">'+powers[i]+'</button>';
-                                }
+                    field: 'permissions'
+                    ,align: 'left'
+                    ,title: '用户权限'
+                    ,templet: function (d) {
+                        var html='<span>';
+                        if (d.permissions != null||d.permissions != undefined) {
+                            var powers=d.permissions.split(",");
+                            for(var i=0;i<powers.length;i++){
+                                html +='<button type="button" class="layui-btn layui-btn-normal layui-btn-xs">'+powers[i]+'</button>';
                             }
-                            html += '</span>';
-                            return html;
                         }
+                        html += '</span>';
+                        return html;
                     }
-                    ,{title: '操作', width: 160, align: 'center', toolbar: '#rowBar'}
+                }
+                    , {field: 'permissions', width: 160, align: 'center',title: '操作',templet: function (d) {
+                        var html='<span>';
+                        if (rowRolename ==="超级管理员") {
+                            html +='<a class="layui-btn layui-btn-normal layui-btn-xs layui-btn-disabled" lay-event="edit">编辑角色权限</a>';
+                        } else{
+                            html +='<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑角色权限</a>';
+                        }
+                        html += '</span>';
+                        return html;
+                    }
+                }
                 ]
             ]
             , page: {
@@ -172,37 +171,34 @@
                 case 'edit':
                     layer.open({
                         type: 2
-                        ,title:'<font color="#1E9FFF"><b>修改用户角色</b></font>'
+                        ,title:'<font color="#1E9FFF"><b>修改角色权限</b></font>'
                         ,anim: 1 //动画
                         ,area: ['500px', '480px']
                         ,offset: ['20%', '20%'] //弹框坐标top  left
-                        ,content: '/user/er?username='+data.uname
+                        ,content: '/user/ep?rolename='+data.rolename
                         ,btn: ['确定', '取消']
                         ,yes: function(index, layero){
                             var body = layer.getChildFrame('body', index);
-                            var chooseUserName=body.find('input[id=username]').val();
+                            var chooseRolename=body.find('input[id=rolename]').val();
                             var res=JSON.parse(body.find('input[id=res]').val());
-                            console.log("res:"+JSON.stringify(res));
-                            console.log("res:"+JSON.stringify(res.addList).toString());
-                            console.log("res:"+JSON.stringify(res.delList).toString());
                             $.ajax({
                                 type: "get"
-                                ,url: "/user/editRole"
-                                ,data: {username:chooseUserName,addList:res.addList.toString(),delList:res.delList.toString()}
+                                ,url: "/user/epd"
+                                ,data: {rolename:chooseRolename,addList:res.addList.toString(),delList:res.delList.toString()}
                                 ,success: function (data) {
                                     if (data > 0){
-                                        layer.msg('角色修改成功！', {
+                                        layer.msg('权限修改成功！', {
                                             icon: 1,
                                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                         });
                                         layer.close(index);
                                     }else if(data === 0){
-                                        layer.msg('您还没有修改角色信息！', {
+                                        layer.msg('您还没有修改权限信息！', {
                                             icon: 5,
                                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                         });
                                     }else{
-                                        layer.msg('角色修改失败！', {
+                                        layer.msg('权限修改失败！', {
                                             icon: 2,
                                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                         });

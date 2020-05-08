@@ -7,12 +7,7 @@ import com.example.shop.dao.VUserRolePermissionExample;
 import com.example.shop.entity.User;
 import com.example.shop.entity.UserRole;
 import com.example.shop.entity.VUserRolePermissionWithBLOBs;
-import com.example.shop.exception.MyException;
-import com.example.shop.service.RoleService;
-import com.example.shop.service.UserService;
-import com.example.shop.service.VUserRolePermissionWithBLOBsService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import com.example.shop.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,16 +18,22 @@ import javax.annotation.Resource;
 import java.util.*;
 
 /*
- * 用户管理、用户权限管理控制层
+ * 用户管理、角色管理、权限管理控制层
  * */
 @Controller
 @RequestMapping("/user")
-public class UserPermissionManageController {
+public class UserRolePermissionManageController {
     @Resource
     private UserService userService;
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private PermissionService permissionService;
+
+    @Resource
+    private VRolePermissionService vRolePermissionServe;
 
     @Resource
     private VUserRolePermissionWithBLOBsService vsService;
@@ -128,22 +129,21 @@ public class UserPermissionManageController {
         return mv;
     }
 
-    //查询所有角色
     @RequestMapping("/qar")
     @ResponseBody
     public String queryAllRole(@RequestParam(value = "username")String username){
         UserRoleExample urExample=new UserRoleExample();
         urExample.setOrderByClause("rid asc");
-
+        UserRoleExample.Criteria urCriteria=urExample.createCriteria();
+        urCriteria.andUsernameIsNull();
         //全部角色信息
         List<UserRole> roleList= roleService.selectByExample(urExample);
-        //登录账户拥有的角色信息
+        //参数账户拥有的角色信息
         List<UserRole> roleListExist= roleService.selectRolesByUserName(username);
         List<String> tempList = new ArrayList<>();
         for(UserRole ur:roleListExist){
             tempList.add(ur.getRolename());
         }
-
         LinkedList<JSONObject> dataList = new LinkedList<JSONObject>();
         JSONObject data= new JSONObject(true);
         String exist="";
@@ -155,9 +155,9 @@ public class UserPermissionManageController {
             json.put("value", ur.getRid());
             json.put("title", ur.getRolename());
             if(!temp.contains(ur.getRolename())) {//temp中没有的数据才能放入dataList
-                if("superadmin".equals(ur.getRolename())){
+                if("超级管理员".equals(ur.getRolename())){
                     json.put("disabled",true);
-                }else if ("user".equals(ur.getRolename())){
+                }else if ("普通用户".equals(ur.getRolename())){
                     json.put("disabled",true);
                 }
                 dataList.add((JSONObject) JSONObject.toJSON(json));
@@ -172,9 +172,10 @@ public class UserPermissionManageController {
         return data.toString();
     }
 
-    @RequestMapping("/editRole")
+    //修改用户角色
+    @RequestMapping("/erd")
     @ResponseBody
-    public int editRole(
+    public int editRoleData(
              @RequestParam("username")String _username
             ,@RequestParam(value = "addList",defaultValue = "")String _addList
             ,@RequestParam(value = "delList",defaultValue = "")String _delList){
@@ -182,43 +183,77 @@ public class UserPermissionManageController {
         int statius = 0;
         String[] addList=_addList.split(",");
         String[] delList=_delList.split(",");
-        List<UserRole> addArr = new ArrayList<UserRole>();
-        if (_addList.length() == 0 && _delList.length() == 0){
-            System.out.println("000:"+count);
-            return count;
-        }
-        if(!"".equals(_addList)){
-            for (int i=0;i<addList.length;i++){
-                UserRole ur = new UserRole();
-                ur.setRid(i);
-                ur.setUsername(_username);
-                ur.setRolename(addList[i]);
-                addArr.add(ur);
-            }
-            count=roleService.insertList(addArr);
-            if (count != addArr.size()){
-                statius += -1;
-                throw new MyException("角色信息添加错误！ClassName:UserPermissionManageController.editRole()");
-            }else {
-                statius += 1;
+
+        if(_addList.length()>0){
+            statius=roleService.insertList(_username,addList);
+            if (statius < 0){
+                return statius;
             }
         }
-        if(!"".equals(_delList)){
-            UserRoleExample urExample = new UserRoleExample();
-            UserRoleExample.Criteria urCriteria = urExample.createCriteria();
-            for (int j=0;j<delList.length;j++){
-                urExample.or().andRolenameEqualTo(delList[j]);
-            }
-            urCriteria.andUsernameEqualTo(_username);
-            count=roleService.deleteByExample(urExample);
-            if (count != delList.length){
-                statius += -1;
-                throw new MyException("角色信息删除错误！ClassName:UserPermissionManageController.editRole()");
-            }else {
-                statius += 1;
+        if(_delList.length()>0){
+            statius=roleService.deleteByExample(_username,delList);
+            if (statius < 0){
+                return statius;
             }
         }
-        System.out.println("count:"+count);
-        return count;
+        return statius;
+    }
+
+    //角色管理页面
+    @RequestMapping("/rm")
+    public String roleManage(){
+        return "thymeleaf/user/roleManage";
+    }
+
+    //查询所有权限
+    @RequestMapping("/qap")
+    @ResponseBody
+    public String queryAllPermission(@RequestParam(value = "rolename")String rolename){
+        return permissionService.selectPermissionsByExample(rolename);
+    }
+
+    @RequestMapping("/rm/data")
+    @ResponseBody
+    public String roleManage(
+        @RequestParam(value = "page",defaultValue = "1")Integer pageIdx
+        ,@RequestParam(value = "limit",defaultValue = "15")Integer pageNum
+    ){
+        return vRolePermissionServe.selectByExampleWithBLOBs(pageIdx,pageNum);
+    }
+
+    //权限管理页面
+    @RequestMapping("/ep")
+    @ResponseBody
+    public ModelAndView editPermission(@RequestParam(value = "rolename")String rolename){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("thymeleaf/user/editPermission");
+        mv.addObject("rolename",rolename);
+        return mv;
+    }
+    //修改角色权限
+    @RequestMapping("/epd")
+    @ResponseBody
+    public int editPermissionData(
+            @RequestParam("rolename")String _rolename
+            ,@RequestParam(value = "addList",defaultValue = "")String _addList
+            ,@RequestParam(value = "delList",defaultValue = "")String _delList){
+        int count = 0;
+        int status = 0;
+        String[] addList=_addList.split(",");
+        String[] delList=_delList.split(",");
+
+        if(_addList.length()>0){
+            status=permissionService.insertList(_rolename,addList);
+            if (status < 0){
+                return status;
+            }
+        }
+        if(_delList.length()>0){
+            status=permissionService.deleteByExample(_rolename,delList);
+            if (status < 0){
+                return status;
+            }
+        }
+        return status;
     }
 }

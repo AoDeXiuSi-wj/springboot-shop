@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改角色权限</title>
+    <script src="/all/layui-v2.5.6/layui/layui.js"></script>
+    <script src="/all//layui-v2.5.6/layui/lay/modules/jquery.js"></script>
+    <link rel="stylesheet" href="/all/layui-v2.5.6/layui/css/layui.css">
+</head>
+<body>
+<input id="rolename" type="hidden" th:value="${rolename}" />
+<input id="res" type="hidden" />
+<div id="tranDiv" class="demo-transfer" style="padding: 10px"></div>
+</body>
+<script>
+    layui.use(['transfer', 'layer', 'util'], function () {
+        var $ = layui.$
+            , transfer = layui.transfer
+            , layer = layui.layer
+            , util = layui.util;
+
+        var permissionData=null;//所有角色信息
+        var oldList =[];//当前用户已有角色信息的key集合
+        var newList=[];//当前用户修改角色信息后的key集合
+        $(function () {
+            $.ajax({
+                type:"get"
+                ,url:"/user/qap"
+                ,data: {rolename:$("#rolename").val()}
+                ,success:function (res) {
+                    var ress = eval("("+res+")");
+                    permissionData = ress.data;
+                    oldList=ress.exist.split(",");
+                    transfer.render({
+                        elem: '#tranDiv'
+                        ,title: ['可添加权限', '当前权限']  //自定义标题
+                        ,data: permissionData
+                        ,value: oldList
+                        //穿梭时回调
+                        ,onchange: function(obj, index){
+                            newList=this.value;
+                            var permissionData=getEditRoles(oldList,newList);
+                            $("#res").val(JSON.stringify(permissionData));
+                            //var arr = ['左边', '右边'];
+                            // layer.alert('来自 <strong>'+ arr[index] + '</strong> 的数据：'+ JSON.stringify(obj)); //获得被穿梭时的数据
+                        }
+                    })
+                }
+            });
+        });
+
+        //得到新增权限、删除权限
+        function getEditRoles(oldList,newList) {
+            var addList=[],delList=[];
+            if (newList.length == 0) {//删除了所有权限
+                for (var i = 0; i < oldList.length; i++) {
+                    for (var r in permissionData) {
+                        if (permissionData[r].value == oldList[i]) {
+                            delList.push(permissionData[r].title);
+                        }
+                    }
+                }
+            }else  {
+                for (var i = 0; i < newList.length; i++) {
+                    for (var j = 0; j < oldList.length; j++) {
+                        if (newList[i] != oldList[j]) {
+                            if (oldList.indexOf(newList[i]) == -1) {//得到新增权限的value值
+                                for (var r in permissionData) {
+                                    if (permissionData[r].value == newList[i]) {
+                                        addList.push(permissionData[r].title);//得到新增角色的title值
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            //console.log("addList:"+addList);
+            for (var i=0;i< oldList.length;i++) {
+                for(var j=0;j<newList.length;j++){
+                    if (oldList[i] != newList[j]){
+                        if(newList.indexOf(oldList[i]) ==-1){//得到删除角色的value值
+                            for (var r in permissionData){
+                                if (permissionData[r].value == oldList[i]){
+                                    delList.push(permissionData[r].title);//得到删除角色的title值
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //console.log("delList:"+delList);
+            var dataJson={"addList":addList,"delList":delList};
+            return dataJson;
+        }
+    });
+</script>
+</html>

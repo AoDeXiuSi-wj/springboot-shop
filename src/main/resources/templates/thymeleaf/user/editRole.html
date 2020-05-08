@@ -34,7 +34,7 @@
                    oldList=ress.exist.split(",");
                    transfer.render({
                        elem: '#tranDiv'
-                       ,title: ['全部角色', '当前角色']  //自定义标题
+                       ,title: ['可添加角色', '当前角色']  //自定义标题
                        ,data: roleData
                        ,value: oldList
                        //穿梭时回调
@@ -53,17 +53,27 @@
         //得到新增角色、删除角色
         function getEditRoles(oldList,newList) {
             var addList=[],delList=[];
-            for (var i=0;i< newList.length;i++) {
-                for(var j=0;j<oldList.length;j++){
-                    if (newList[i] != oldList[j]){
-                        if(oldList.indexOf(newList[i]) ==-1){//得到新增角色的value值
-                            for (var r in roleData){
-                                if (roleData[r].value == newList[i]){
-                                    addList.push(roleData[r].title);//得到新增角色的title值
+            if (newList.length == 0) {//删除了所有角色
+                for (var i = 0; i < oldList.length; i++) {
+                    for (var r in roleData) {
+                        if (roleData[r].value == oldList[i]) {
+                            delList.push(roleData[r].title);
+                        }
+                    }
+                }
+            } else {
+                for (var i=0;i< newList.length;i++) {
+                    for(var j=0;j<oldList.length;j++){
+                        if (newList[i] != oldList[j]){
+                            if(oldList.indexOf(newList[i]) ==-1){//得到新增角色的value值
+                                for (var r in roleData){
+                                    if (roleData[r].value == newList[i]){
+                                        addList.push(roleData[r].title);//得到新增角色的title值
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
                     }
                 }
             }
@@ -82,7 +92,7 @@
                     }
                 }
             }
-           console.log("delList:"+delList);
+           //console.log("delList:"+delList);
 
             var dataJson={"addList":addList,"delList":delList};
             return dataJson;

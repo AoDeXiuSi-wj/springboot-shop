@@ -10,7 +10,7 @@ public interface RoleService {
 
     List<UserRole> selectByExample(UserRoleExample example);
 
-    int insertList(List<UserRole> userList);
+    int insertList(String username,String[] addList);
 
-    int deleteByExample(UserRoleExample example);
+    int deleteByExample(String username,String[] delList);
 }

@@ -11,4 +11,10 @@ public interface PermissionService {
     List<RolePermission> selectPermissionsByRoleName(String rolename);
 
     List<RolePermission> selectPermissionsByExample(RolePermissionExample example);
+
+    String selectPermissionsByExample(String rolename);
+
+    int insertList(String rolename,String[] addList);
+
+    int deleteByExample(String rolename,String[] delList);
 }

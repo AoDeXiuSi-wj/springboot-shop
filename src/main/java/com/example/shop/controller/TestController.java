@@ -21,6 +21,12 @@ public class TestController {
     public String test(){
         return "thymeleaf/test/test";
     }
+
+    @RequestMapping("/test2")
+    public String test2(){
+        return "thymeleaf/test/test2";
+    }
+
     @RequiresPermissions("delete")
     @RequestMapping("/shirotest")
     public String shirotest(){
