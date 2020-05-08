@@ -1,18 +1,17 @@
 package com.example.shop.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.shop.exception.MyException;
 import com.example.shop.util.VerificationCodeTool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +30,7 @@ public class LoginConctroller {
      */
     @RequestMapping("/login")
     public String login(){
-        return "thymeleaf/user/login";
+        return "thymeleaf/login";
     }
     /****
      * 登出
@@ -63,11 +62,11 @@ public class LoginConctroller {
         String errMsg="";
         String captcha = (String) session.getAttribute("code");
         JSONObject json=new JSONObject();
-//        if (!captcha.equals(imgcode)){
-//            json.put("status", -1);
-//            json.put("errMsg", "验证码错误！");
-//            return json.toJSONString();
-//        }
+        if (!captcha.equals(imgcode)){
+            json.put("status", -1);
+            json.put("errMsg", "验证码错误！");
+            return json.toJSONString();
+        }
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(uname,upwsd);
             subject.login(token);

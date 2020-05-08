@@ -1,5 +1,8 @@
 package com.example.shop.entity;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +10,7 @@ import java.util.Date;
  * user
  * @author 
  */
+@Component
 public class User implements Serializable {
     /**
      * 唯一标识
@@ -98,6 +102,25 @@ public class User implements Serializable {
         this.usex = usex;
     }
 
+    public String getUtext() {
+        return utext;
+    }
+
+    public void setUtext(String utext) {
+        this.utext = utext;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", uname='" + uname + '\'' +
+                ", upswd='" + upswd + '\'' +
+                ", utel='" + utel + '\'' +
+                ", ueml='" + ueml + '\'' +
+                ", usex=" + usex +
+                ", utext='" + utext + '\'' +
+                '}';
     public String getUtext() {
         return utext;
     }

@@ -1,5 +1,6 @@
 package com.example.shop.shiro;
 
+
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.example.shop.session.ShiroSessionListener;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -26,6 +27,34 @@ import java.util.*;
 
 @Configuration
 public class ShiroConfig {
+    @Bean
+    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
+        System.out.println("--------------------shiro filter-------------------");
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
+        //注意过滤器配置顺序 不能颠倒
+        //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了，登出后跳转配置的loginUrl
+        // 配置不会被拦截的链接 顺序判断
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/all/**", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/chklogin", "anon");
+        filterChainDefinitionMap.put("/changeimglogin", "anon");
+        filterChainDefinitionMap.put("/html/test", "anon");
+        filterChainDefinitionMap.put("/shop", "user");
+        //拦截其他所以接口
+        filterChainDefinitionMap.put("/**", "authc");
+        //配置shiro默认登录界面地址，前后端分离中登录界面跳转应由前端路由控制，后台仅返回json数据
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        // 登录成功后要跳转的链接 自行处理。不用shiro进行跳转
+        shiroFilterFactoryBean.setSuccessUrl("/shop");
+        //未授权界面;
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/unauth");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        return shiroFilterFactoryBean;
+    }
+
     /**
      * shiro 用户数据注入
      * @return
@@ -36,6 +65,22 @@ public class ShiroConfig {
         //告诉shiro，密码加密
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
+    }
+
+    /**
+     * 配置管理层。即安全控制层
+     * @return
+     */
+    @Bean
+    public SecurityManager securityManager(){
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(shiroRealm());
+        return  securityManager;
+    }
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
     }
 
     /**
