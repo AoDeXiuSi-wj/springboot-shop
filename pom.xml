@@ -68,7 +68,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.25</version>
+            <version>1.26</version>
         </dependency>
         <!-- Shiro Freemarker标签 在thymeleaf模板引擎中使用-->
         <dependency>
